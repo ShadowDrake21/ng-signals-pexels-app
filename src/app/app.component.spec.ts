@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'ng-signals-pexels-app' title`, () => {
+  it(`should have the 'book-angular-app' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ng-signals-pexels-app');
+    expect(app.title).toEqual('book-angular-app');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ng-signals-pexels-app');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, book-angular-app');
   });
 });
