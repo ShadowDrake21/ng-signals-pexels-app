@@ -7,4 +7,8 @@ import { environment } from '../../../environments/environment.development';
 })
 export class PexelsService {
   private client = createClient(environment.pexels_api_key);
+
+  public getClient() {
+    return this.client;
+  }
 }
