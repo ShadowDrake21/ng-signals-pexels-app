@@ -2,11 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("./theme.scss");
+
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.custom-container {
+  max-width: 1520px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.content {
+  flex: 1;
+}
+
+.dark .footer {
+  background-color: #212121 !important;
+  color: #fff;
+}
+
+.dark .photo-list__item {
+  box-shadow: 5px 4px 4px 0 #212121 !important;
+}
+
+.dark .primary-btn {
+  background-color: #fff !important;
+  color: #000 !important;
 }

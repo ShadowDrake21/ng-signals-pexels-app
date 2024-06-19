@@ -1,0 +1,18 @@
+@if (video()) {
+<mat-card class="video-miniature px-4" appearance="outlined">
+  <mat-card-header>
+    <a [href]="video().user.url" target="_blank">
+      <mat-card-title>{{ video().user.name }} on Pexels</mat-card-title>
+    </a>
+  </mat-card-header>
+  <video controls>
+    <source [src]="getAppropriateVideo()?.link" type="video/mp4" />
+  </video>
+  <mat-card-actions class="justify-between">
+    <a [href]="video().url" target="_blank" mat-button>See on Pexels</a>
+    <button mat-button>
+      <mat-icon fontIcon="thumb_up"></mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
+}

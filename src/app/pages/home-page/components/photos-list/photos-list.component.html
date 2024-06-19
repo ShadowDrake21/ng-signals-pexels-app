@@ -1,7 +1,7 @@
-<mat-grid-list [cols]="4">
+<div class="photos-list">
   @for (photo of photos(); track photo.id) {
-  <mat-grid-tile>
-    <app-photo-miniature [photo]="photo"></app-photo-miniature
-  ></mat-grid-tile>
+  <div class="photo-list__item">
+    <app-photo-miniature [photo]="photo"></app-photo-miniature>
+  </div>
   }
-</mat-grid-list>
+</div>

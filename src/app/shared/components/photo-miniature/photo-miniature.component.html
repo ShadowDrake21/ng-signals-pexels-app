@@ -8,7 +8,7 @@
     <img mat-card-image [src]="photo().src.original" [alt]="photo().alt"
   /></a>
   <mat-card-actions class="justify-between">
-    <button mat-button>See on Pexels</button>
+    <a [href]="photo().url" target="_blank" mat-button>See on Pexels</a>
     <button mat-button>
       <mat-icon fontIcon="thumb_up"></mat-icon>
     </button>
