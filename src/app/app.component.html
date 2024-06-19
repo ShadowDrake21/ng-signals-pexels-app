@@ -1,1 +1,10 @@
-<router-outlet></router-outlet>
+<main
+  class="main min-h-screen"
+  [ngClass]="themeSig() === 'dark' ? 'dark' : 'light'"
+>
+  <app-header></app-header>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer></app-footer>
+</main>

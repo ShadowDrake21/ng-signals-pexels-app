@@ -15,27 +15,49 @@ import {
   PhotosWithTotalResults,
   Photo,
   Photos,
+  Videos,
+  Video,
 } from 'pexels';
 import { PhotoMiniatureComponent } from '../../shared/components/photo-miniature/photo-miniature.component';
 import { PhotosListComponent } from './components/photos-list/photos-list.component';
+import { JsonPipe, NgClass } from '@angular/common';
+import { VideosService } from '../../core/services/videos.service';
+import { VideoMiniatureComponent } from '../../shared/components/video-miniature/video-miniature.component';
+import { VideosListComponent } from './components/videos-list/videos-list.component';
+import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [PhotoMiniatureComponent, PhotosListComponent],
+  imports: [
+    NgClass,
+    JsonPipe,
+    PhotoMiniatureComponent,
+    PhotosListComponent,
+    VideoMiniatureComponent,
+    VideosListComponent,
+    PrimaryLinkComponent,
+  ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   private photosService = inject(PhotosService);
+  private videosService = inject(VideosService);
 
-  photosSig: WritableSignal<Photo[]> = signal([]);
+  photosSig = signal<Photo[]>([]);
+  videosSig = signal<Video[]>([]);
 
   private subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
-    this.photosService
-      .searchPhotos('girls')
+    this.fetchPhotos();
+    this.fetchVideos();
+  }
+
+  fetchPhotos() {
+    const photosSubscription = this.photosService
+      .searchPhotos('Poland')
       .pipe(
         filter(
           (response): response is PhotosWithTotalResults =>
@@ -45,6 +67,23 @@ export class HomePageComponent implements OnInit, OnDestroy {
         map((photos) => this.photosSig.set(photos))
       )
       .subscribe();
+
+    this.subscriptions.push(photosSubscription);
+  }
+
+  fetchVideos() {
+    this.videosService
+      .searchVideo('money', { per_page: 4 })
+      .pipe(
+        filter(
+          (response): response is Videos =>
+            'videos' in response && 'total_results' in response
+        ),
+        map(({ videos }) => this.videosSig.set(videos))
+      )
+      .subscribe(() => {
+        console.log(this.videosSig());
+      });
   }
 
   ngOnDestroy(): void {
