@@ -1,0 +1,16 @@
+<mat-card class="photo-miniature" appearance="outlined">
+  <mat-card-header>
+    <a [href]="photo().photographer_url" target="_blank">
+      <mat-card-title>{{ photo().photographer }} on Pexels</mat-card-title>
+    </a>
+  </mat-card-header>
+  <a class="cursor-pointer" (click)="openModal()">
+    <img mat-card-image [src]="photo().src.original" [alt]="photo().alt"
+  /></a>
+  <mat-card-actions class="justify-between">
+    <button mat-button>See on Pexels</button>
+    <button mat-button>
+      <mat-icon fontIcon="thumb_up"></mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
