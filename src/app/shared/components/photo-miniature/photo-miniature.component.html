@@ -4,8 +4,8 @@
       <mat-card-title>{{ photo().photographer }} on Pexels</mat-card-title>
     </a>
   </mat-card-header>
-  <a class="cursor-pointer" (click)="openModal()">
-    <img mat-card-image [src]="photo().src.original" [alt]="photo().alt"
+  <a class="photo-miniature__img-wrapper cursor-pointer" (click)="openModal()">
+    <img mat-card-image [src]="photo().src.medium" [alt]="photo().alt"
   /></a>
   <mat-card-actions class="justify-between">
     <a [href]="photo().url" target="_blank" mat-button>See on Pexels</a>

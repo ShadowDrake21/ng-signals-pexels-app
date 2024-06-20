@@ -8,7 +8,18 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { PhotosService } from '../../core/services/photos.service';
-import { filter, map, Subscription, switchMap } from 'rxjs';
+import {
+  catchError,
+  delay,
+  filter,
+  forkJoin,
+  map,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+  timer,
+} from 'rxjs';
 import {
   PaginationParams,
   ErrorResponse,
@@ -25,6 +36,8 @@ import { VideosService } from '../../core/services/videos.service';
 import { VideoMiniatureComponent } from '../../shared/components/video-miniature/video-miniature.component';
 import { VideosListComponent } from './components/videos-list/videos-list.component';
 import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
+import { ErrorTemplateComponent } from '../../shared/components/error-template/error-template.component';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-home-page',
@@ -37,6 +50,8 @@ import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/pr
     VideoMiniatureComponent,
     VideosListComponent,
     PrimaryLinkComponent,
+    ErrorTemplateComponent,
+    LoadingComponent,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
@@ -45,45 +60,81 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private photosService = inject(PhotosService);
   private videosService = inject(VideosService);
 
+  photosLoading: boolean = false;
+  videosLoading: boolean = false;
+
   photosSig = signal<Photo[]>([]);
   videosSig = signal<Video[]>([]);
+
+  photosErrorSig = signal<ErrorResponse | null>(null);
+  videosErrorSig = signal<ErrorResponse | null>(null);
 
   private subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
-    this.fetchPhotos();
-    this.fetchVideos();
-  }
+    this.photosLoading = true;
+    this.videosLoading = true;
+    console.log('loading begins');
 
-  fetchPhotos() {
-    const photosSubscription = this.photosService
-      .searchPhotos('Poland')
-      .pipe(
-        filter(
-          (response): response is PhotosWithTotalResults =>
-            'photos' in response && 'total_results' in response
-        ),
-        map((photosWithResults) => photosWithResults.photos),
-        map((photos) => this.photosSig.set(photos))
-      )
-      .subscribe();
-
-    this.subscriptions.push(photosSubscription);
-  }
-
-  fetchVideos() {
-    this.videosService
-      .searchVideo('money', { per_page: 4 })
-      .pipe(
-        filter(
-          (response): response is Videos =>
-            'videos' in response && 'total_results' in response
-        ),
-        map(({ videos }) => this.videosSig.set(videos))
-      )
+    const forkJoinSubscription = forkJoin([
+      this.fetchPhotos(),
+      this.fetchVideos(),
+    ])
+      .pipe(delay(2000))
       .subscribe(() => {
-        console.log(this.videosSig());
+        const timerSubscription = timer(300).subscribe(() => {
+          this.photosLoading = false;
+          this.videosLoading = false;
+        });
+
+        this.subscriptions.push(timerSubscription);
       });
+
+    this.subscriptions.push(forkJoinSubscription);
+  }
+
+  fetchPhotos(): Observable<void> {
+    return this.photosService.searchPhotos('Poland').pipe(
+      map((response) => {
+        if ('photos' in response && 'total_results' in response) {
+          return { type: 'success', data: response.photos };
+        } else {
+          throw response;
+        }
+      }),
+      map((result) => {
+        if (result.type === 'success') {
+          this.photosSig.set(result.data);
+        }
+      }),
+      catchError((error: ErrorResponse) => {
+        this.photosErrorSig.set(error);
+        return of();
+      })
+    );
+
+    // this.subscriptions.push(photosSubscription);
+  }
+
+  fetchVideos(): Observable<void> {
+    return this.videosService.searchVideo('money', { per_page: 4 }).pipe(
+      map((response) => {
+        if ('videos' in response && 'total_results' in response) {
+          return { type: 'success', data: response.videos };
+        } else {
+          throw response;
+        }
+      }),
+      map((result) => {
+        if (result.type === 'success') {
+          this.videosSig.set(result.data);
+        }
+      }),
+      catchError((error: ErrorResponse) => {
+        this.videosErrorSig.set(error);
+        return of();
+      })
+    );
   }
 
   ngOnDestroy(): void {
