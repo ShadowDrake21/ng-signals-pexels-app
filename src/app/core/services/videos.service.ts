@@ -32,7 +32,7 @@ export class VideosService {
     return toSignal(
       from(
         this.client.videos.popular({
-          page: params?.page || 1, //???
+          page: params?.page || 1,
           per_page: params?.per_page || 5,
         })
       ).pipe(

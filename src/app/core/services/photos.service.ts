@@ -28,7 +28,9 @@ export class PhotosService {
 
     return from(this.client.photos.search(searchParams)).pipe(
       map((response) => response as PhotosWithTotalResults),
-      catchError((error) => of(error as ErrorResponse))
+      catchError((error) => {
+        return of(error as ErrorResponse);
+      })
     );
   }
 
@@ -41,12 +43,10 @@ export class PhotosService {
     );
   }
 
-  getRandomPhoto(): Signal<ErrorResponse | Photo | undefined> {
-    return toSignal(
-      from(this.client.photos.random()).pipe(
-        map((response) => response as Photo),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  getRandomPhoto(): Observable<ErrorResponse | Photo> {
+    return from(this.client.photos.random()).pipe(
+      map((response) => response as Photo),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 

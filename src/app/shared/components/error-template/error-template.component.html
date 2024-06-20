@@ -1,0 +1,12 @@
+<div class="error">
+  <h3 class="text-xl font-bold pb-3">Ooops, error! Try once again later!</h3>
+  <div class="error-img__wrapper">
+    @if (type === 'photos') {
+    <img src="/assets/gifs/error-photos.gif" alt="" />} @else if(type ===
+    'videos') {
+    <img src="/assets/gifs/error-videos.gif" alt="" />
+    } @else {
+    <img src="/assets/gifs/error-default.gif" alt="" />
+    }
+  </div>
+</div>

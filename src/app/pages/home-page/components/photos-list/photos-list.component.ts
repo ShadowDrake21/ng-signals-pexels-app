@@ -1,7 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { Photo } from 'pexels';
 import { PhotoMiniatureComponent } from '../../../../shared/components/photo-miniature/photo-miniature.component';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-photos-list',

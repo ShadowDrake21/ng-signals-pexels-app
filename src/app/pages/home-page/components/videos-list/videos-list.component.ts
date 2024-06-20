@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { Video } from 'pexels';
 import { VideoMiniatureComponent } from '../../../../shared/components/video-miniature/video-miniature.component';
