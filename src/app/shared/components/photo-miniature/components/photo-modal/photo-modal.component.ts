@@ -7,7 +7,7 @@ import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-photo-modal',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, JsonPipe],
+  imports: [MatDialogModule, MatButtonModule],
   templateUrl: './photo-modal.component.html',
   styleUrl: './photo-modal.component.scss',
 })
