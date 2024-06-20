@@ -42,8 +42,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private photosService = inject(PhotosService);
   private videosService = inject(VideosService);
 
-  photosLoading: boolean = false;
-  videosLoading: boolean = false;
+  photosLoading: boolean = true;
+  videosLoading: boolean = true;
 
   photosSig = signal<Photo[]>([]);
   videosSig = signal<Video[]>([]);
@@ -57,9 +57,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
-    this.photosLoading = true;
-    this.videosLoading = true;
+    this.loadAllData();
+  }
 
+  loadAllData() {
     const forkJoinSubscription = forkJoin([
       this.fetchPhotos(),
       this.fetchVideos(),
@@ -136,10 +137,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
           this.randomPhotoSig.set(result.photo);
         }
       }),
-      catchError((error: ErrorResponse) => {
-        this.isOtherError = true;
-        return of();
-      })
+      catchError((error: ErrorResponse) => this.handleOtherError())
     );
   }
 
@@ -157,11 +155,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
           this.popularVideoSig.set(result.data);
         }
       }),
-      catchError((error: ErrorResponse) => {
-        this.isOtherError = true;
-        return of();
-      })
+      catchError((error: ErrorResponse) => this.handleOtherError())
     );
+  }
+
+  private handleOtherError(): Observable<never> {
+    this.isOtherError = true;
+    return of();
   }
 
   ngOnDestroy(): void {

@@ -10,13 +10,7 @@ import { PhotoModalComponent } from './components/photo-modal/photo-modal.compon
 @Component({
   selector: 'app-photo-miniature',
   standalone: true,
-  imports: [
-    JsonPipe,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatDialogModule,
-  ],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, MatDialogModule],
   templateUrl: './photo-miniature.component.html',
   styleUrl: './photo-miniature.component.scss',
 })

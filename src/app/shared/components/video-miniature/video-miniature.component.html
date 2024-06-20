@@ -6,10 +6,13 @@
     </a>
   </mat-card-header>
   <video controls>
-    <source [src]="getAppropriateVideo()?.link" type="video/mp4" />
+    <source [src]="getAppropriateVideo(video())?.link" type="video/mp4" />
   </video>
   <mat-card-actions class="justify-between">
-    <a [href]="video().url" target="_blank" mat-button>See on Pexels</a>
+    <div>
+      <a [href]="video().url" target="_blank" mat-button>See on Pexels</a>
+      <button mat-button (click)="openModal()">See more</button>
+    </div>
     <button mat-button>
       <mat-icon fontIcon="thumb_up"></mat-icon>
     </button>
