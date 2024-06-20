@@ -34,12 +34,10 @@ export class PhotosService {
     );
   }
 
-  getPhoto(id: number): Signal<ErrorResponse | Photo | undefined> {
-    return toSignal(
-      from(this.client.photos.show({ id })).pipe(
-        map((response) => response as Photo),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  getPhoto(id: number): Observable<Photo | ErrorResponse> {
+    return from(this.client.photos.show({ id })).pipe(
+      map((response) => response as Photo),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 

@@ -40,16 +40,14 @@ export class VideosService {
     );
   }
 
-  getVideo(id: number): Signal<Video | ErrorResponse | undefined> {
-    return toSignal(
-      from(
-        this.client.videos.show({
-          id,
-        })
-      ).pipe(
-        map((response) => response as Video),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  getVideo(id: number): Observable<Video | ErrorResponse> {
+    return from(
+      this.client.videos.show({
+        id,
+      })
+    ).pipe(
+      map((response) => response as Video),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 }
