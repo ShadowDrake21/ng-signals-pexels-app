@@ -1,0 +1,30 @@
+<header>
+  <mat-toolbar>
+    <div class="custom-container header-toolbar__inner">
+      <div class="flex items-center gap-2">
+        <button mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Signals Pexels App by Drake21</span>
+        <img class="w-10" src="/assets/header-logo.png" alt="logo" />
+      </div>
+      <div class="flex gap-4 items-center">
+        <button mat-icon-button>
+          <mat-icon>favorite</mat-icon>
+        </button>
+        <div class="flex items-center">
+          <mat-slide-toggle
+            (toggleChange)="handleToggleTheme()"
+            [checked]="themeSig() === 'light'"
+          ></mat-slide-toggle>
+          <button mat-icon-button>
+            @if (themeSig() === 'dark') {
+            <mat-icon>dark_mode</mat-icon>} @else {
+            <mat-icon>light_mode</mat-icon>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-toolbar>
+</header>
