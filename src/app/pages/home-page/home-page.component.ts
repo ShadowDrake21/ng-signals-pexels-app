@@ -1,34 +1,16 @@
-import {
-  Component,
-  inject,
-  OnDestroy,
-  OnInit,
-  Signal,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { PhotosService } from '../../core/services/photos.service';
 import {
   catchError,
   delay,
-  filter,
   forkJoin,
   map,
   Observable,
   of,
   Subscription,
-  switchMap,
   timer,
 } from 'rxjs';
-import {
-  PaginationParams,
-  ErrorResponse,
-  PhotosWithTotalResults,
-  Photo,
-  Photos,
-  Videos,
-  Video,
-} from 'pexels';
+import { ErrorResponse, Photo, Video } from 'pexels';
 import { PhotoMiniatureComponent } from '../../shared/components/photo-miniature/photo-miniature.component';
 import { PhotosListComponent } from './components/photos-list/photos-list.component';
 import { JsonPipe, NgClass } from '@angular/common';
