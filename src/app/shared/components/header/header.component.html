@@ -2,9 +2,47 @@
   <mat-toolbar>
     <div class="custom-container header-toolbar__inner">
       <div class="flex items-center gap-2">
-        <button mat-icon-button>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>menu</mat-icon>
         </button>
+        <mat-menu #menu="matMenu">
+          <a
+            class="menu-link"
+            mat-menu-item
+            routerLink="/home"
+            routerLinkActive="active"
+          >
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+          </a>
+          <a
+            class="menu-link"
+            mat-menu-item
+            routerLink="/search"
+            routerLinkActive="active"
+          >
+            <mat-icon>search</mat-icon>
+            <span>Search</span>
+          </a>
+          <a
+            class="menu-link"
+            mat-menu-item
+            routerLink="/popular-videos"
+            routerLinkActive="active"
+          >
+            <mat-icon>star</mat-icon>
+            <span>Popular videos</span></a
+          >
+          <a
+            class="menu-link"
+            mat-menu-item
+            routerLink="/collections"
+            routerLinkActive="active"
+          >
+            <mat-icon>category</mat-icon>
+            <span>Collections</span>
+          </a>
+        </mat-menu>
         <span>Signals Pexels App by Drake21</span>
         <img class="w-10" src="/assets/header-logo.png" alt="logo" />
       </div>
