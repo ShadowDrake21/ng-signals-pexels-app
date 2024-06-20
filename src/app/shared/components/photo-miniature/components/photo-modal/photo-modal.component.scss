@@ -1,0 +1,14 @@
+.photo-modal {
+  max-height: calc(100vh - 90px);
+  height: 100%;
+
+  &__image-wrapper {
+    max-width: 500px;
+    img {
+      object-fit: cover;
+    }
+  }
+}
+.mat-mdc-dialog-content {
+  max-height: calc(100vh - 90px);
+}
