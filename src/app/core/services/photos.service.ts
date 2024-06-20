@@ -43,7 +43,7 @@ export class PhotosService {
     );
   }
 
-  getRandomPhoto(): Observable<ErrorResponse | Photo> {
+  getRandomPhoto(): Observable<Photo | ErrorResponse> {
     return from(this.client.photos.random()).pipe(
       map((response) => response as Photo),
       catchError((error) => of(error as ErrorResponse))
@@ -52,17 +52,15 @@ export class PhotosService {
 
   getCuratedPhotos(
     params?: PaginationParams
-  ): Signal<Photos | ErrorResponse | undefined> {
-    return toSignal(
-      from(
-        this.client.photos.curated({
-          page: params?.page || 1,
-          per_page: params?.per_page || 10,
-        })
-      ).pipe(
-        map((response) => response as Photos),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  ): Observable<Photos | ErrorResponse> {
+    return from(
+      this.client.photos.curated({
+        page: params?.page || 1,
+        per_page: params?.per_page || 10,
+      })
+    ).pipe(
+      map((response) => response as Photos),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 }

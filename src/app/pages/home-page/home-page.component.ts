@@ -65,20 +65,24 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   photosSig = signal<Photo[]>([]);
   videosSig = signal<Video[]>([]);
+  randomPhotoSig = signal<Photo | null>(null);
+  popularVideoSig = signal<Video | null>(null);
 
-  photosErrorSig = signal<ErrorResponse | null>(null);
-  videosErrorSig = signal<ErrorResponse | null>(null);
+  isPhotosError: boolean = false;
+  isVideosError: boolean = false;
+  isOtherError: boolean = false;
 
   private subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
     this.photosLoading = true;
     this.videosLoading = true;
-    console.log('loading begins');
 
     const forkJoinSubscription = forkJoin([
       this.fetchPhotos(),
       this.fetchVideos(),
+      this.fetchRandomPhoto(),
+      this.fetchPopularVideo(),
     ])
       .pipe(delay(2000))
       .subscribe(() => {
@@ -108,12 +112,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
         }
       }),
       catchError((error: ErrorResponse) => {
-        this.photosErrorSig.set(error);
+        this.isPhotosError = true;
         return of();
       })
     );
-
-    // this.subscriptions.push(photosSubscription);
   }
 
   fetchVideos(): Observable<void> {
@@ -131,7 +133,50 @@ export class HomePageComponent implements OnInit, OnDestroy {
         }
       }),
       catchError((error: ErrorResponse) => {
-        this.videosErrorSig.set(error);
+        this.isVideosError = true;
+        return of();
+      })
+    );
+  }
+
+  fetchRandomPhoto(): Observable<void> {
+    return this.photosService.getRandomPhoto().pipe(
+      map((response) => {
+        if ('id' in response) {
+          return { type: 'success', photo: response };
+        } else {
+          throw response;
+        }
+      }),
+      map((result) => {
+        if (result.type === 'success') {
+          console.log('random', result.photo);
+          this.randomPhotoSig.set(result.photo);
+        }
+      }),
+      catchError((error: ErrorResponse) => {
+        this.isOtherError = true;
+        return of();
+      })
+    );
+  }
+
+  fetchPopularVideo(): Observable<void> {
+    return this.videosService.getPopularVideos({ per_page: 1 }).pipe(
+      map((response) => {
+        if ('videos' in response && 'total_results' in response) {
+          return { type: 'success', data: response.videos[0] as Video };
+        } else {
+          throw response;
+        }
+      }),
+      map((result) => {
+        if (result.type === 'success') {
+          this.popularVideoSig.set(result.data);
+        }
+      }),
+      catchError((error: ErrorResponse) => {
+        this.isOtherError = true;
         return of();
       })
     );

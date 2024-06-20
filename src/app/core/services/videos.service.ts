@@ -28,17 +28,15 @@ export class VideosService {
 
   getPopularVideos(
     params?: PaginationParams
-  ): Signal<Videos | ErrorResponse | undefined> {
-    return toSignal(
-      from(
-        this.client.videos.popular({
-          page: params?.page || 1,
-          per_page: params?.per_page || 5,
-        })
-      ).pipe(
-        map((response) => response as Videos),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  ): Observable<Videos | ErrorResponse> {
+    return from(
+      this.client.videos.popular({
+        page: params?.page || 1,
+        per_page: params?.per_page || 5,
+      })
+    ).pipe(
+      map((response) => response as Videos),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 
