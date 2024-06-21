@@ -1,0 +1,19 @@
+<div class="loading flex justify-center relative">
+  <div class="loading-wrapper">
+    @if (type === 'page') {
+    <img
+      class="loading-image"
+      src="/assets/gifs/loading.gif"
+      alt="loading gif"
+    />
+    <div class="loader loader-custom loader-custom-page"></div>
+    } @else {
+    <img
+      class="loading-image"
+      src="/assets/gifs/search-loading.gif"
+      alt="search loading gif"
+    />
+    <div class="loader loader-custom oader-custom-search"></div>
+    }
+  </div>
+</div>
