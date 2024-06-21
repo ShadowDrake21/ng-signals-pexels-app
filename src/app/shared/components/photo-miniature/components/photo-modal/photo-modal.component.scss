@@ -5,6 +5,7 @@
   &__image-wrapper {
     max-width: 500px;
     img {
+      max-height: 800px;
       object-fit: cover;
     }
   }

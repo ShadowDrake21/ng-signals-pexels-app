@@ -1,1 +1,22 @@
-<img src="/assets/images/search-img-3.png" alt="search img" />
+<div class="search-photos">
+  <div class="flex flex-col items-center justify-center pt-3">
+    <mat-form-field class="w-3/4">
+      <mat-label>Videos search</mat-label>
+      <input matInput type="text" [(ngModel)]="value" />
+      @if (value) {
+      <button matSuffix mat-icon-button (click)="value = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </mat-form-field>
+  </div>
+  <div class="flex justify-center relative">
+    <div
+      class="absolute top-1/2 left-1/2 p-3 bg-white"
+      style="transform: translate(-50%, -50%)"
+    >
+      <h4 class="text-2xl font-bold">Start search something...</h4>
+    </div>
+    <img class="w-96" src="/assets/images/search-img-2.png" alt="search img" />
+  </div>
+</div>
