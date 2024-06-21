@@ -6,10 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { PhotosService } from '../../../../core/services/photos.service';
 import {
+  catchError,
   debounceTime,
+  delay,
   distinctUntilChanged,
   filter,
   map,
+  of,
   Subject,
   Subscription,
   switchMap,
@@ -19,6 +22,8 @@ import {
 import { PhotosWithTotalResults } from 'pexels';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PhotoMiniatureComponent } from '../../../../shared/components/photo-miniature/photo-miniature.component';
+import { LoadingTemplateComponent } from '../../../../shared/components/loading-template/loading-template.component';
+import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
 
 @Component({
   selector: 'app-search-photos',
@@ -31,6 +36,8 @@ import { PhotoMiniatureComponent } from '../../../../shared/components/photo-min
     MatButtonModule,
     MatPaginatorModule,
     PhotoMiniatureComponent,
+    LoadingTemplateComponent,
+    ErrorTemplateComponent,
   ],
   templateUrl: './search-photos.component.html',
   styleUrl: './search-photos.component.scss',
@@ -48,35 +55,47 @@ export class SearchPhotosComponent implements OnInit, OnDestroy {
   photosWithTotalResultsSig = signal<PhotosWithTotalResults | null>(null);
   errorSig = signal<string>('');
 
+  loading: boolean = false;
+
   private subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
     this.search$$
       .pipe(
+        tap((value) => {
+          this.loading = !!value.length;
+        }),
         debounceTime(500),
         distinctUntilChanged(),
-        map((term) => {
-          if (term.length) {
-            return term;
-          } else {
-            this.photosWithTotalResultsSig.update((prev) => null);
-            return;
+        switchMap((term) => {
+          if (!term.length) {
+            this.photosWithTotalResultsSig.set(null);
+            return of(null);
           }
+          return this.photosService.searchPhotos(term).pipe(
+            catchError((error) => {
+              console.log('error switchmap');
+              this.errorSig.set('Something went wrong! Try one more time!');
+              this.loading = false;
+              return of(null);
+            })
+          );
         }),
-        filter((value) => !!value),
-        switchMap((term) => this.photosService.searchPhotos(term!)),
         tap(() => {
           this.pageSizeSig() !== 10 && this.pageSizeSig.update((prev) => 10);
           this.currentPageSig() !== 0 &&
             this.currentPageSig.update((prev) => 0);
         }),
+        delay(500),
         takeUntil(this.destroy$$)
       )
       .subscribe((foundPhotos) => {
-        if ('photos' in foundPhotos) {
+        this.loading = false;
+        if (foundPhotos && 'photos' in foundPhotos) {
           this.photosWithTotalResultsSig.set(foundPhotos);
+          this.errorSig.set('');
         } else {
-          this.errorSig.set('Something went wrong! Try one more time!');
+          this.photosWithTotalResultsSig.set(null);
         }
       });
   }
@@ -103,7 +122,7 @@ export class SearchPhotosComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((result) => {
-        if ('photos' in result) {
+        if (result && 'photos' in result) {
           this.photosWithTotalResultsSig.update((prev) => result);
         } else {
           this.errorSig.set('Something went wrong! Try one more time!');
