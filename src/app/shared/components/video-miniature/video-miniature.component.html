@@ -5,7 +5,7 @@
       <mat-card-title>{{ video().user.name }} on Pexels</mat-card-title>
     </a>
   </mat-card-header>
-  <video controls>
+  <video controls class="video-minianure__film">
     <source [src]="getAppropriateVideo(video())?.link" type="video/mp4" />
   </video>
   <mat-card-actions class="justify-between">

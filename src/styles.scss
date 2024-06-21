@@ -52,7 +52,7 @@ body {
 .photos-list {
   column-count: 5;
   column-gap: 1em;
-  margin: 1em;
+  margin: 1em 0;
   padding: 0;
   column-gap: 1em;
   font-size: 0.85em;
@@ -81,11 +81,6 @@ body {
 @media only screen and (min-width: 769px) and (max-width: 1200px) {
   .photos-list {
     column-count: 4;
-  }
-}
-@media only screen and (min-width: 1201px) {
-  .photos-list {
-    column-count: 5;
   }
 }
 
@@ -128,4 +123,8 @@ body {
       calc(3 * 100% / 3) calc(50% + calc(var(--s) / 8)),
       calc(3 * 100% / 3) calc(50% - calc(var(--s) / 8));
   }
+}
+
+.search-part {
+  min-height: 600px;
 }

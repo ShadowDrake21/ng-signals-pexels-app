@@ -2,7 +2,7 @@ import { Injectable, Signal, inject } from '@angular/core';
 import { PexelsService } from './pexels.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationParams, Videos, ErrorResponse, Video } from 'pexels';
-import { from, map, catchError, of, Observable } from 'rxjs';
+import { from, map, catchError, of, Observable, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class VideosService {
@@ -10,10 +10,10 @@ export class VideosService {
 
   client = this.pexelsService.getClient();
 
-  searchVideo(
+  searchVideos(
     query: string,
     params?: PaginationParams
-  ): Observable<Videos | ErrorResponse> {
+  ): Observable<Videos | null> {
     const searchParams = {
       query,
       page: params?.page || 1,
@@ -22,7 +22,7 @@ export class VideosService {
 
     return from(this.client.videos.search(searchParams)).pipe(
       map((response) => response as Videos),
-      catchError((error) => of(error as ErrorResponse))
+      catchError((error) => throwError(() => of(null)))
     );
   }
 
