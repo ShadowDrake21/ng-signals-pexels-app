@@ -1,11 +1,33 @@
 <section>
   <div class="custom-container">
-    <mat-tab-group>
+    <mat-form-field class="w-3/4">
+      <mat-label>Search</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="handleSearchInputChange()"
+      />
+      @if (searchTerm) {
+      <button matSuffix mat-icon-button (click)="onClearInput()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </mat-form-field>
+    <mat-tab-group [(selectedIndex)]="typeNumberSig">
       <mat-tab label="Photos">
-        <app-search-photos></app-search-photos>
+        <app-search-photos
+          [photos]="photosWithTotalResultsSig()"
+          [error]="errorPhotosSig()"
+          [loading]="loadingPhotos"
+        ></app-search-photos>
       </mat-tab>
       <mat-tab label="Videos">
-        <app-search-videos></app-search-videos>
+        <app-search-videos
+          [videos]="videosWithTotalResultsSig()"
+          [error]="errorVideosSig()"
+          [loading]="loadingVideos"
+        ></app-search-videos>
       </mat-tab>
     </mat-tab-group>
   </div>

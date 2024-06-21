@@ -102,9 +102,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   fetchVideos(): Observable<void> {
-    return this.videosService.searchVideo('money', { per_page: 4 }).pipe(
+    return this.videosService.searchVideos('money', { per_page: 4 }).pipe(
       map((response) => {
-        if ('videos' in response && 'total_results' in response) {
+        if (response && 'videos' in response && 'total_results' in response) {
           return { type: 'success', data: response.videos };
         } else {
           throw response;

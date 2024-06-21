@@ -1,4 +1,12 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
@@ -42,100 +50,131 @@ import { ErrorTemplateComponent } from '../../../../shared/components/error-temp
   templateUrl: './search-photos.component.html',
   styleUrl: './search-photos.component.scss',
 })
-export class SearchPhotosComponent implements OnInit, OnDestroy {
-  private photosService = inject(PhotosService);
+export class SearchPhotosComponent {
+  photosWithTotalResultsSig = input.required<PhotosWithTotalResults | null>({
+    alias: 'photos',
+  });
+  errorSig = input.required<string>({ alias: 'error' });
+  loading = input.required<boolean>();
 
-  private search$$ = new Subject<string>();
-  private destroy$$ = new Subject<void>();
-
-  searchTerm = '';
-  currentPageSig = signal<number>(0);
-  pageSizeSig = signal<number>(10);
-
-  photosWithTotalResultsSig = signal<PhotosWithTotalResults | null>(null);
-  errorSig = signal<string>('');
-
-  loading: boolean = false;
-
-  private subscriptions: Subscription[] = [];
-
-  ngOnInit(): void {
-    this.search$$
-      .pipe(
-        tap((value) => {
-          this.loading = !!value.length;
-        }),
-        debounceTime(500),
-        distinctUntilChanged(),
-        switchMap((term) => {
-          if (!term.length) {
-            this.photosWithTotalResultsSig.set(null);
-            return of(null);
-          }
-          return this.photosService.searchPhotos(term).pipe(
-            catchError((error) => {
-              console.log('error switchmap');
-              this.errorSig.set('Something went wrong! Try one more time!');
-              this.loading = false;
-              return of(null);
-            })
-          );
-        }),
-        tap(() => {
-          this.pageSizeSig() !== 10 && this.pageSizeSig.update((prev) => 10);
-          this.currentPageSig() !== 0 &&
-            this.currentPageSig.update((prev) => 0);
-        }),
-        delay(500),
-        takeUntil(this.destroy$$)
-      )
-      .subscribe((foundPhotos) => {
-        this.loading = false;
-        if (foundPhotos && 'photos' in foundPhotos) {
-          this.photosWithTotalResultsSig.set(foundPhotos);
-          this.errorSig.set('');
-        } else {
-          this.photosWithTotalResultsSig.set(null);
-        }
-      });
-  }
-
-  handleSearchInputChange() {
-    this.search$$.next(this.searchTerm);
-  }
-
-  onClearInput() {
-    this.searchTerm = '';
-    this.handleSearchInputChange();
-  }
-
+  paginationChange = output<PageEvent>();
   onPaginatorChange(event: PageEvent) {
-    const paginatorChangeSubscription = this.photosService
-      .searchPhotos(this.searchTerm, {
-        page: event.pageIndex + 1,
-        per_page: event.pageSize,
-      })
-      .pipe(
-        tap(() => {
-          this.pageSizeSig.update((prev) => event.pageSize);
-          this.currentPageSig.update((prev) => event.pageIndex);
-        })
-      )
-      .subscribe((result) => {
-        if (result && 'photos' in result) {
-          this.photosWithTotalResultsSig.update((prev) => result);
-        } else {
-          this.errorSig.set('Something went wrong! Try one more time!');
-        }
-      });
+    this.paginationChange.emit(event);
+    // const paginatorChangeSubscription = this.photosService
+    //   .searchPhotos(this.searchTerm, {
+    //     page: event.pageIndex + 1,
+    //     per_page: event.pageSize,
+    //   })
+    //   .pipe(
+    //     tap(() => {
+    //       this.pageSizeSig.update((prev) => event.pageSize);
+    //       this.currentPageSig.update((prev) => event.pageIndex);
+    //     })
+    //   )
+    //   .subscribe((result) => {
+    //     if (result && 'photos' in result) {
+    //       this.photosWithTotalResultsSig.update((prev) => result);
+    //     } else {
+    //       this.errorSig.set('Something went wrong! Try one more time!');
+    //     }
+    //   });
 
-    this.subscriptions.push(paginatorChangeSubscription);
+    // this.subscriptions.push(paginatorChangeSubscription);
   }
 
-  ngOnDestroy(): void {
-    this.destroy$$.next();
-    this.destroy$$.complete();
+  // private photosService = inject(PhotosService);
 
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
+  // private search$$ = new Subject<string>();
+  // private destroy$$ = new Subject<void>();
+
+  // searchTerm = '';
+  // currentPageSig = signal<number>(0);
+  // pageSizeSig = signal<number>(10);
+
+  // photosWithTotalResultsSig = signal<PhotosWithTotalResults | null>(null);
+  // errorSig = signal<string>('');
+
+  // loading: boolean = false;
+
+  // private subscriptions: Subscription[] = [];
+
+  // ngOnInit(): void {
+  //   this.search$$
+  //     .pipe(
+  //       tap((value) => {
+  //         this.loading = !!value.length;
+  //       }),
+  //       debounceTime(500),
+  //       distinctUntilChanged(),
+  //       switchMap((term) => {
+  //         if (!term.length) {
+  //           this.photosWithTotalResultsSig.set(null);
+  //           return of(null);
+  //         }
+  //         return this.photosService.searchPhotos(term).pipe(
+  //           catchError((error) => {
+
+  //             this.errorSig.set('Something went wrong! Try one more time!');
+  //             this.loading = false;
+  //             return of(null);
+  //           })
+  //         );
+  //       }),
+  //       tap(() => {
+  //         this.pageSizeSig() !== 10 && this.pageSizeSig.update((prev) => 10);
+  //         this.currentPageSig() !== 0 &&
+  //           this.currentPageSig.update((prev) => 0);
+  //       }),
+  //       delay(500),
+  //       takeUntil(this.destroy$$)
+  //     )
+  //     .subscribe((foundPhotos) => {
+  //       this.loading = false;
+  //       if (foundPhotos && 'photos' in foundPhotos) {
+  //         this.photosWithTotalResultsSig.set(foundPhotos);
+  //         this.errorSig.set('');
+  //       } else {
+  //         this.photosWithTotalResultsSig.set(null);
+  //       }
+  //     });
+  // }
+
+  // handleSearchInputChange() {
+  //   this.search$$.next(this.searchTerm);
+  // }
+
+  // onClearInput() {
+  //   this.searchTerm = '';
+  //   this.handleSearchInputChange();
+  // }
+
+  // onPaginatorChange(event: PageEvent) {
+  //   const paginatorChangeSubscription = this.photosService
+  //     .searchPhotos(this.searchTerm, {
+  //       page: event.pageIndex + 1,
+  //       per_page: event.pageSize,
+  //     })
+  //     .pipe(
+  //       tap(() => {
+  //         this.pageSizeSig.update((prev) => event.pageSize);
+  //         this.currentPageSig.update((prev) => event.pageIndex);
+  //       })
+  //     )
+  //     .subscribe((result) => {
+  //       if (result && 'photos' in result) {
+  //         this.photosWithTotalResultsSig.update((prev) => result);
+  //       } else {
+  //         this.errorSig.set('Something went wrong! Try one more time!');
+  //       }
+  //     });
+
+  //   this.subscriptions.push(paginatorChangeSubscription);
+  // }
+
+  // ngOnDestroy(): void {
+  //   this.destroy$$.next();
+  //   this.destroy$$.complete();
+
+  //   this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  // }
 }
