@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center">
+<!-- <div class="flex flex-col items-center">
   <div class="flex flex-col max-w-96 w-full">
     <mat-form-field>
       <mat-label>Photos search</mat-label>
@@ -12,4 +12,56 @@
     <button mat-raised-button>Search</button>
   </div>
 </div>
-<img src="/assets/images/search-img-1.png" alt="search img" />
+<img src="/assets/images/search-img-1.png" alt="search img" /> -->
+
+<div class="search-photos">
+  <div class="flex flex-col items-center justify-center pt-3">
+    <mat-form-field class="w-3/4">
+      <mat-label>Photos search</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="handleSearchInputChange()"
+      />
+      @if (searchTerm) {
+      <button matSuffix mat-icon-button (click)="onClearInput()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+    </mat-form-field>
+  </div>
+  @if (!errorSig() && photosWithTotalResultsSig()) {
+  <div>
+    <p>
+      <span class="font-bold">Total photos: </span
+      >{{ photosWithTotalResultsSig()?.total_results }}
+    </p>
+  </div>
+  <div class="photos-list">
+    @for (photo of photosWithTotalResultsSig()?.photos; track photo.id) {
+    <div class="photo-list__item">
+      <app-photo-miniature [photo]="photo"></app-photo-miniature>
+    </div>
+    }
+  </div>
+  <mat-paginator
+    [length]="photosWithTotalResultsSig()?.total_results"
+    [pageIndex]="currentPageSig()"
+    [pageSize]="pageSizeSig()"
+    [pageSizeOptions]="[10, 25]"
+    (page)="onPaginatorChange($event)"
+  >
+  </mat-paginator>
+  } @else {
+  <div class="flex justify-center relative">
+    <div
+      class="absolute top-1/2 left-1/2 p-3 bg-white"
+      style="transform: translate(-50%, -50%)"
+    >
+      <h4 class="text-2xl font-bold">Start search something...</h4>
+    </div>
+    <img class="w-96" src="/assets/images/search-img-1.png" alt="search img" />
+  </div>
+  }
+</div>
