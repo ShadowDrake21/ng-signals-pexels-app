@@ -1,21 +1,5 @@
 <div class="search-part">
-  <div class="flex flex-col items-center justify-center pt-3">
-    <mat-form-field class="w-3/4">
-      <mat-label>Photos search</mat-label>
-      <input
-        matInput
-        type="text"
-        [(ngModel)]="searchTerm"
-        (input)="handleSearchInputChange()"
-      />
-      @if (searchTerm) {
-      <button matSuffix mat-icon-button (click)="onClearInput()">
-        <mat-icon>close</mat-icon>
-      </button>
-      }
-    </mat-form-field>
-  </div>
-  @if (!loading) { @if (!errorSig() &&
+  @if (!loading()) { @if (!errorSig() &&
   photosWithTotalResultsSig()?.photos?.length) {
   <div>
     <p>
@@ -51,7 +35,7 @@
     <img class="w-96" src="/assets/images/search-img-3.png" alt="search img" />
   </div>
   } @else if(errorSig()) {
-  <div class="flex justify-center">
+  <div class="flex justify-center py-10">
     <app-error-template errorType="photos"></app-error-template>
   </div>
   } @else {
@@ -65,7 +49,7 @@
     <img class="w-96" src="/assets/images/search-img-1.png" alt="search img" />
   </div>
   }} @else {
-  <div class="flex justify-center">
+  <div class="flex justify-center py-10">
     <app-loading-template type="search"></app-loading-template>
   </div>
   }

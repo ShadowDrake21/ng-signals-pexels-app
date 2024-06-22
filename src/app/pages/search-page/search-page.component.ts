@@ -25,7 +25,6 @@ import {
   delay,
   takeUntil,
   Observable,
-  BehaviorSubject,
 } from 'rxjs';
 import { VideosService } from '../../core/services/videos.service';
 import { PhotosService } from '../../core/services/photos.service';
@@ -60,14 +59,13 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   typeSig = signal<'photos' | 'videos'>('photos');
 
   searchTerm = '';
-  defaultPageSize: number = 10;
-  currentPageSig = signal<number>(0);
-  pageSizeSig = signal<number>(10);
 
   photosWithTotalResultsSig = signal<PhotosWithTotalResults | null>(null);
   videosWithTotalResultsSig = signal<Videos | null>(null);
+
   errorPhotosSig = signal<string>('');
   errorVideosSig = signal<string>('');
+  private errorMessage: string = 'Something went wrong! Try one more time!';
 
   loadingPhotos: boolean = false;
   loadingVideos: boolean = false;
@@ -78,6 +76,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     effect(
       () => {
         this.syncTypeSignals();
+        this.resetResultSignals();
+        this.searchTerm = '';
       },
       { allowSignalWrites: true }
     );
@@ -124,53 +124,53 @@ export class SearchPageComponent implements OnInit, OnDestroy {
               .pipe(catchError((error) => this.catchErrorInSearch()));
           }
         }),
-        tap(() => {
-          this.resetSettings();
-        }),
+
         delay(500),
         takeUntil(this.destroy$$)
       )
       .subscribe((foundItems) => {
-        if (this.typeSig() === 'photos') {
-          this.loadingPhotos = false;
-        } else {
-          this.loadingVideos = false;
-        }
+        this.setLoadingState(false);
         if (foundItems) {
           if ('photos' in foundItems) {
             this.photosWithTotalResultsSig.set(foundItems);
+
             this.errorPhotosSig.set('');
           } else if ('videos' in foundItems) {
             this.videosWithTotalResultsSig.set(foundItems);
             this.errorVideosSig.set('');
           }
         } else {
-          this.photosWithTotalResultsSig.set(null);
-          this.videosWithTotalResultsSig.set(null);
+          this.resetResultSignals();
         }
       });
   }
 
-  catchErrorInSearch(): Observable<null> {
+  private setLoadingState(state: boolean) {
     if (this.typeSig() === 'photos') {
-      this.loadingVideos = false;
-      this.errorPhotosSig.set('Something went wrong! Try one more time!');
+      this.loadingPhotos = state;
     } else {
-      this.loadingPhotos = false;
-      this.errorVideosSig.set('Something went wrong! Try one more time!');
+      this.loadingVideos = state;
+    }
+  }
+
+  catchErrorInSearch(): Observable<null> {
+    this.setLoadingState(false);
+    if (this.typeSig() === 'photos') {
+      this.errorPhotosSig.set(this.errorMessage);
+    } else {
+      this.errorVideosSig.set(this.errorMessage);
     }
 
     return of(null);
   }
 
-  resetSettings() {
-    this.pageSizeSig() !== this.defaultPageSize &&
-      this.pageSizeSig.update((prev) => this.defaultPageSize);
-    this.currentPageSig() !== 0 && this.currentPageSig.update((prev) => 0);
-  }
-
   handleSearchInputChange() {
     this.search$$.next(this.searchTerm);
+  }
+
+  private resetResultSignals() {
+    this.photosWithTotalResultsSig.set(null);
+    this.videosWithTotalResultsSig.set(null);
   }
 
   onClearInput() {
@@ -204,27 +204,20 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     const paginatorChangeSubscription = service[searchModule](
       this.searchTerm,
       searchParameters
-    )
-      .pipe(
-        tap(() => {
-          this.pageSizeSig.update((prev) => event.pageSize);
-          this.currentPageSig.update((prev) => event.pageIndex);
-        })
-      )
-      .subscribe((result: any) => {
-        if (
-          result &&
-          (type === 'photos' ? 'photos' in result : 'videos' in result)
-        ) {
-          updatedSignal.update(() => result);
+    ).subscribe((result: any) => {
+      if (
+        result &&
+        (type === 'photos' ? 'photos' in result : 'videos' in result)
+      ) {
+        updatedSignal.update(() => result);
+      } else {
+        if (this.typeSig() === 'photos') {
+          this.errorPhotosSig.set(this.errorMessage);
         } else {
-          if (this.typeSig() === 'photos') {
-            this.errorPhotosSig.set('Something went wrong! Try one more time!');
-          } else {
-            this.errorVideosSig.set('Something went wrong! Try one more time!');
-          }
+          this.errorVideosSig.set(this.errorMessage);
         }
-      });
+      }
+    });
     this.subscriptions.push(paginatorChangeSubscription);
   }
 
