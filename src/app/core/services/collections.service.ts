@@ -12,13 +12,11 @@ import { PexelsService } from './pexels.service';
 export class CollectionsService {
   private pexelsService = inject(PexelsService);
 
-  client = this.pexelsService.getClient();
-
   getFeaturedCollections(
     params?: PaginationParams
   ): Observable<CollectionsWithTotalResults | null> {
     return from(
-      this.client.collections.featured({
+      this.pexelsService.getClient().collections.featured({
         page: params?.page || 1,
         per_page: params?.per_page || 5,
       })
@@ -29,7 +27,7 @@ export class CollectionsService {
   }
 
   getCollectionMedia(
-    id: number,
+    id: string,
     params?: PaginationParams,
     type: 'photos' | 'videos' = 'photos'
   ): Observable<CollectionMediaWidthTotalResults | null> {
@@ -40,7 +38,9 @@ export class CollectionsService {
       type: type,
     };
 
-    return from(this.client.collections.media(searchParams)).pipe(
+    return from(
+      this.pexelsService.getClient().collections.media(searchParams)
+    ).pipe(
       map((response) => response as CollectionMediaWidthTotalResults),
       catchError((error) => of(null))
     );

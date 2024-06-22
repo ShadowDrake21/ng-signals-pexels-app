@@ -58,7 +58,7 @@ export class CollectionsComponent implements OnInit, OnDestroy {
             this.collectionsWithTotalResultsSig.set(result.data);
           }
         }),
-        delay(3000),
+        delay(2000),
         tap(() => {
           this.loading = false;
         }),
