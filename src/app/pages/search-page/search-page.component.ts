@@ -32,6 +32,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { errorMessage } from '../../shared/contents/errors.contents';
 
 @Component({
   selector: 'app-search-page',
@@ -65,7 +66,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   errorPhotosSig = signal<string>('');
   errorVideosSig = signal<string>('');
-  private errorMessage: string = 'Something went wrong! Try one more time!';
 
   loadingPhotos: boolean = false;
   loadingVideos: boolean = false;
@@ -75,9 +75,10 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   constructor() {
     effect(
       () => {
+        this.searchTerm = '';
         this.syncTypeSignals();
         this.resetResultSignals();
-        this.searchTerm = '';
+        this.startSearch();
       },
       { allowSignalWrites: true }
     );
@@ -119,6 +120,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
               .searchPhotos(term)
               .pipe(catchError((error) => this.catchErrorInSearch()));
           } else {
+            console.log('search videos');
             return this.videosService
               .searchVideos(term, { per_page: 6 })
               .pipe(catchError((error) => this.catchErrorInSearch()));
@@ -156,9 +158,9 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   catchErrorInSearch(): Observable<null> {
     this.setLoadingState(false);
     if (this.typeSig() === 'photos') {
-      this.errorPhotosSig.set(this.errorMessage);
+      this.errorPhotosSig.set(errorMessage);
     } else {
-      this.errorVideosSig.set(this.errorMessage);
+      this.errorVideosSig.set(errorMessage);
     }
 
     return of(null);
@@ -212,9 +214,9 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         updatedSignal.update(() => result);
       } else {
         if (this.typeSig() === 'photos') {
-          this.errorPhotosSig.set(this.errorMessage);
+          this.errorPhotosSig.set(errorMessage);
         } else {
-          this.errorVideosSig.set(this.errorMessage);
+          this.errorVideosSig.set(errorMessage);
         }
       }
     });

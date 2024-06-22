@@ -26,9 +26,7 @@ export class VideosService {
     );
   }
 
-  getPopularVideos(
-    params?: PaginationParams
-  ): Observable<Videos | ErrorResponse> {
+  getPopularVideos(params?: PaginationParams): Observable<Videos | null> {
     return from(
       this.client.videos.popular({
         page: params?.page || 1,
@@ -36,7 +34,7 @@ export class VideosService {
       })
     ).pipe(
       map((response) => response as Videos),
-      catchError((error) => of(error as ErrorResponse))
+      catchError((error) => throwError(() => of(null)))
     );
   }
 
