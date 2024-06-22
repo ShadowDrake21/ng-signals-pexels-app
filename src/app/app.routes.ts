@@ -31,16 +31,13 @@ export const routes: Routes = [
       import('./pages/collections/collections.component').then(
         (c) => c.CollectionsComponent
       ),
-
-    children: [
-      {
-        path: ':id',
-        loadChildren: () =>
-          import('./pages/single-collection/single-collection.component').then(
-            (c) => c.SingleCollectionComponent
-          ),
-      },
-    ],
+  },
+  {
+    path: 'single-collection/:id',
+    loadComponent: () =>
+      import('./pages/single-collection/single-collection.component').then(
+        (c) => c.SingleCollectionComponent
+      ),
   },
   {
     path: '**',

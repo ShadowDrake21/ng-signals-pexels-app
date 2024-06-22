@@ -8,5 +8,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './loading-template.component.scss',
 })
 export class LoadingTemplateComponent {
-  @Input({ required: true }) type!: 'page' | 'search' | 'popular-videos';
+  @Input({ required: true }) type!:
+    | 'page'
+    | 'search'
+    | 'popular-videos'
+    | 'collections';
 }
