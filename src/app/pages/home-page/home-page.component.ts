@@ -144,7 +144,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   fetchPopularVideo(): Observable<void> {
     return this.videosService.getPopularVideos({ per_page: 1 }).pipe(
       map((response) => {
-        if ('videos' in response && 'total_results' in response) {
+        if (response && 'videos' in response && 'total_results' in response) {
           return { type: 'success', data: response.videos[0] as Video };
         } else {
           throw response;
