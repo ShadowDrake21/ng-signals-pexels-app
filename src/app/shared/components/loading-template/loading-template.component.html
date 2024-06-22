@@ -7,11 +7,18 @@
       alt="loading gif"
     />
     <div class="loader loader-custom loader-custom-page"></div>
-    } @else {
+    } @else if (type === 'search') {
     <img
       class="loading-image"
       src="/assets/gifs/search-loading.gif"
       alt="search loading gif"
+    />
+    <div class="loader loader-custom oader-custom-search"></div>
+    } @else if (type === 'popular-videos') {
+    <img
+      class="loading-image"
+      src="/assets/gifs/loading-popular-videos.gif"
+      alt="loading popular videos gif"
     />
     <div class="loader loader-custom oader-custom-search"></div>
     }

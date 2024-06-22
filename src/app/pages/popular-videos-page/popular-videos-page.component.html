@@ -1,1 +1,33 @@
-<p>popular-videos-page works!</p>
+<div class="custom-container py-5">
+  <h2 class="text-center text-2xl font-bold pb-3">Popular videos</h2>
+  @if (!loading) { @if (!errorSig() &&
+  videosWithTotalResultsSig()?.videos?.length) {
+  <div>
+    <p>
+      <span class="font-bold">Total videos: </span
+      >{{ videosWithTotalResultsSig()?.total_results }}
+    </p>
+  </div>
+  <div class="grid grid-cols-2 gap-4 my-4">
+    @for (video of videosWithTotalResultsSig()?.videos; track video.id) {
+    <app-video-miniature [video]="video"></app-video-miniature>
+    }
+  </div>
+  <mat-paginator
+    [length]="videosWithTotalResultsSig()?.total_results"
+    [pageIndex]="currentPageSig()"
+    [pageSize]="pageSizeSig()"
+    [pageSizeOptions]="[6, 10]"
+    (page)="onPaginatorChange($event)"
+  >
+  </mat-paginator>
+  } @else if(errorSig()) {
+  <div class="flex justify-center py-10">
+    <app-error-template errorType="videos"></app-error-template>
+  </div>
+  }} @else {
+  <div class="flex justify-center py-10">
+    <app-loading-template type="popular-videos"></app-loading-template>
+  </div>
+  }
+</div>
