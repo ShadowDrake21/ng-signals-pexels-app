@@ -1,9 +1,5 @@
 import { Component, effect, input, output, signal } from '@angular/core';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Videos } from 'pexels';
 import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
@@ -14,11 +10,6 @@ import { VideoMiniatureComponent } from '../../../../shared/components/video-min
   selector: 'app-search-videos',
   standalone: true,
   imports: [
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule,
-    MatIconModule,
-    MatButtonModule,
     MatPaginatorModule,
     VideoMiniatureComponent,
     LoadingTemplateComponent,

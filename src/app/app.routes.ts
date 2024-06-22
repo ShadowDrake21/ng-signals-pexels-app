@@ -12,21 +12,6 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'search-photos',
-    loadComponent: () =>
-      import('./pages/search-photos-page/search-photos-page.component').then(
-        (c) => c.SearchPhotosPageComponent
-      ),
-  },
-  // single photo and single video in modals ?
-  {
-    path: 'search-videos',
-    loadComponent: () =>
-      import('./pages/search-videos-page/search-videos-page.component').then(
-        (c) => c.SearchVideosPageComponent
-      ),
-  },
-  {
     path: 'search',
     loadComponent: () =>
       import('./pages/search-page/search-page.component').then(
