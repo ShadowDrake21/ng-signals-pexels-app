@@ -29,7 +29,6 @@ export class PhotosService {
     return from(this.client.photos.search(searchParams)).pipe(
       map((response) => response as PhotosWithTotalResults),
       catchError((error) => {
-        console.log('error service');
         return throwError(() => null);
       })
     );
