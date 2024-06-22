@@ -7,7 +7,7 @@ import {
   Photo,
   Photos,
 } from 'pexels';
-import { from, map, catchError, of, Observable } from 'rxjs';
+import { from, map, catchError, of, Observable, throwError } from 'rxjs';
 import { PexelsService } from './pexels.service';
 
 @Injectable({ providedIn: 'root' })
@@ -19,7 +19,7 @@ export class PhotosService {
   searchPhotos(
     query: string,
     params?: PaginationParams
-  ): Observable<PhotosWithTotalResults | ErrorResponse> {
+  ): Observable<PhotosWithTotalResults | null> {
     const searchParams = {
       query,
       page: params?.page || 1,
@@ -29,17 +29,15 @@ export class PhotosService {
     return from(this.client.photos.search(searchParams)).pipe(
       map((response) => response as PhotosWithTotalResults),
       catchError((error) => {
-        return of(error as ErrorResponse);
+        return throwError(() => null);
       })
     );
   }
 
-  getPhoto(id: number): Signal<ErrorResponse | Photo | undefined> {
-    return toSignal(
-      from(this.client.photos.show({ id })).pipe(
-        map((response) => response as Photo),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  getPhoto(id: number): Observable<Photo | ErrorResponse> {
+    return from(this.client.photos.show({ id })).pipe(
+      map((response) => response as Photo),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 
