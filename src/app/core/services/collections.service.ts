@@ -14,23 +14,9 @@ export class CollectionsService {
 
   client = this.pexelsService.getClient();
 
-  getAllCollections(
-    params?: PaginationParams
-  ): Observable<ErrorResponse | CollectionsWithTotalResults> {
-    return from(
-      this.client.collections.all({
-        page: params?.page || 1,
-        per_page: params?.per_page || 5,
-      })
-    ).pipe(
-      map((response) => response as CollectionsWithTotalResults),
-      catchError((error) => of(error as ErrorResponse))
-    );
-  }
-
   getFeaturedCollections(
     params?: PaginationParams
-  ): Observable<ErrorResponse | CollectionsWithTotalResults> {
+  ): Observable<CollectionsWithTotalResults | null> {
     return from(
       this.client.collections.featured({
         page: params?.page || 1,
@@ -38,7 +24,7 @@ export class CollectionsService {
       })
     ).pipe(
       map((response) => response as CollectionsWithTotalResults),
-      catchError((error) => of(error as ErrorResponse))
+      catchError((error) => of(null))
     );
   }
 
@@ -46,7 +32,7 @@ export class CollectionsService {
     id: number,
     params?: PaginationParams,
     type: 'photos' | 'videos' = 'photos'
-  ): Observable<ErrorResponse | CollectionMediaWidthTotalResults> {
+  ): Observable<CollectionMediaWidthTotalResults | null> {
     const searchParams = {
       id,
       page: params?.page || 1,
@@ -56,7 +42,7 @@ export class CollectionsService {
 
     return from(this.client.collections.media(searchParams)).pipe(
       map((response) => response as CollectionMediaWidthTotalResults),
-      catchError((error) => of(error as ErrorResponse))
+      catchError((error) => of(null))
     );
   }
 }
