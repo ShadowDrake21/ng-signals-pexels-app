@@ -19,7 +19,7 @@ import { VideoMiniatureComponent } from '../../shared/components/video-miniature
 import { VideosListComponent } from './components/videos-list/videos-list.component';
 import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
 import { ErrorTemplateComponent } from '../../shared/components/error-template/error-template.component';
-import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
 
 @Component({
   selector: 'app-home-page',
@@ -33,7 +33,7 @@ import { LoadingComponent } from '../../shared/components/loading/loading.compon
     VideosListComponent,
     PrimaryLinkComponent,
     ErrorTemplateComponent,
-    LoadingComponent,
+    LoadingTemplateComponent,
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
@@ -83,7 +83,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   fetchPhotos(): Observable<void> {
     return this.photosService.searchPhotos('Poland').pipe(
       map((response) => {
-        if ('photos' in response && 'total_results' in response) {
+        if (response && 'photos' in response && 'total_results' in response) {
           return { type: 'success', data: response.photos };
         } else {
           throw response;
@@ -102,9 +102,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   fetchVideos(): Observable<void> {
-    return this.videosService.searchVideo('money', { per_page: 4 }).pipe(
+    return this.videosService.searchVideos('money', { per_page: 4 }).pipe(
       map((response) => {
-        if ('videos' in response && 'total_results' in response) {
+        if (response && 'videos' in response && 'total_results' in response) {
           return { type: 'success', data: response.videos };
         } else {
           throw response;

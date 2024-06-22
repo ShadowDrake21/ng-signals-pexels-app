@@ -8,6 +8,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
 
-  scale: 2;
   --_g: #ffffff 90%, #ffffff00;
+}
+
+.loader-custom-page {
+  scale: 2;
 }

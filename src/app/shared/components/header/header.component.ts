@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ThemeService } from '../../../core/services/theme.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +21,8 @@ import { ThemeService } from '../../../core/services/theme.service';
     MatButtonModule,
     MatToolbarModule,
     MatSlideToggleModule,
+    MatMenuModule,
+    RouterModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

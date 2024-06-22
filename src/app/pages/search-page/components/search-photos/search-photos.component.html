@@ -1,0 +1,56 @@
+<div class="search-part">
+  @if (!loading()) { @if (!errorSig() &&
+  photosWithTotalResultsSig()?.photos?.length) {
+  <div>
+    <p>
+      <span class="font-bold">Total photos: </span
+      >{{ photosWithTotalResultsSig()?.total_results }}
+    </p>
+  </div>
+  <div class="photos-list">
+    @for (photo of photosWithTotalResultsSig()?.photos; track photo.id) {
+    <div class="photo-list__item">
+      <app-photo-miniature [photo]="photo"></app-photo-miniature>
+    </div>
+    }
+  </div>
+  <mat-paginator
+    [length]="photosWithTotalResultsSig()?.total_results"
+    [pageIndex]="currentPageSig()"
+    [pageSize]="pageSizeSig()"
+    [pageSizeOptions]="[10, 25]"
+    (page)="onPaginatorChange($event)"
+  >
+  </mat-paginator>
+  }@else if(!errorSig() &&photosWithTotalResultsSig()?.total_results === 0) {
+  <div class="flex justify-center relative">
+    <div
+      class="absolute top-1/2 left-1/2 p-3 bg-white"
+      style="transform: translate(-50%, -50%)"
+    >
+      <h4 class="text-2xl font-bold">
+        Nothing is here! Use another expression...
+      </h4>
+    </div>
+    <img class="w-96" src="/assets/images/search-img-3.png" alt="search img" />
+  </div>
+  } @else if(errorSig()) {
+  <div class="flex justify-center py-10">
+    <app-error-template errorType="photos"></app-error-template>
+  </div>
+  } @else {
+  <div class="flex justify-center relative">
+    <div
+      class="absolute top-1/2 left-1/2 p-3 bg-white"
+      style="transform: translate(-50%, -50%)"
+    >
+      <h4 class="text-2xl font-bold">Start search something...</h4>
+    </div>
+    <img class="w-96" src="/assets/images/search-img-1.png" alt="search img" />
+  </div>
+  }} @else {
+  <div class="flex justify-center py-10">
+    <app-loading-template type="search"></app-loading-template>
+  </div>
+  }
+</div>

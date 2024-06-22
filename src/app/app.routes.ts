@@ -19,12 +19,18 @@ export const routes: Routes = [
       ),
   },
   // single photo and single video in modals ?
-
   {
     path: 'search-videos',
     loadComponent: () =>
       import('./pages/search-videos-page/search-videos-page.component').then(
         (c) => c.SearchVideosPageComponent
+      ),
+  },
+  {
+    path: 'search',
+    loadComponent: () =>
+      import('./pages/search-page/search-page.component').then(
+        (c) => c.SearchPageComponent
       ),
   },
   {

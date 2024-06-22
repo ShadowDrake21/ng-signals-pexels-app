@@ -1,31 +1,33 @@
-@if (!photosLoading && !videosLoading) {
-<div class="list-section">
-  @if (!isPhotosError) {
-  <app-photos-list [photos]="photosSig()"></app-photos-list>
-  <ui-primary-link path="/search-photos" text="Search photos" />} @else {
-  <app-error-template errorType="photos"></app-error-template>
-  }
-</div>
-<div class="list-section">
-  @if (!isVideosError) {
-  <app-videos-list [videos]="videosSig()"></app-videos-list>
-  <ui-primary-link path="/search-videos" text="Search videos" />} @else {
-  <app-error-template errorType="videos"></app-error-template>
-  }
-</div>
-<div>
-  <h2 class="text-center text-2xl font-bold pb-3">
-    Random photo and popular video
-  </h2>
-  <div class="flex gap-4 justify-center items-center max-h-full">
-    @if (!isOtherError) {
-    <app-photo-miniature [photo]="randomPhotoSig()!"></app-photo-miniature>
-    <app-video-miniature [video]="popularVideoSig()!"></app-video-miniature>}
-    @else { <app-error-template errorType="default"></app-error-template>}
+<section>
+  @if (!photosLoading && !videosLoading) {
+  <div class="list-section">
+    @if (!isPhotosError) {
+    <app-photos-list [photos]="photosSig()"></app-photos-list>
+    <ui-primary-link path="/search-photos" text="Search photos" />} @else {
+    <app-error-template errorType="photos"></app-error-template>
+    }
   </div>
-</div>
-} @else {
-<div class="loading-wrapper" [ngClass]="{ hidden: !photosLoading }">
-  <app-loading></app-loading>
-</div>
-}
+  <div class="list-section">
+    @if (!isVideosError) {
+    <app-videos-list [videos]="videosSig()"></app-videos-list>
+    <ui-primary-link path="/search-videos" text="Search videos" />} @else {
+    <app-error-template errorType="videos"></app-error-template>
+    }
+  </div>
+  <div>
+    <h2 class="text-center text-2xl font-bold pb-3">
+      Random photo and popular video
+    </h2>
+    <div class="flex gap-4 justify-center items-center max-h-full">
+      @if (!isOtherError) {
+      <app-photo-miniature [photo]="randomPhotoSig()!"></app-photo-miniature>
+      <app-video-miniature [video]="popularVideoSig()!"></app-video-miniature>}
+      @else { <app-error-template errorType="default"></app-error-template>}
+    </div>
+  </div>
+  } @else {
+  <div class="loading-wrapper" [ngClass]="{ hidden: !photosLoading }">
+    <app-loading-template type="page"></app-loading-template>
+  </div>
+  }
+</section>
