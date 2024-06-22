@@ -1,1 +1,17 @@
-<p>collections works!</p>
+@for (collection of collectionsWithTotalResultsSig()?.collections; track
+collection.id) {
+<mat-card class="example-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>{{ collection.title }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p *ngIf="collection.description">
+      Description: {{ collection.description }}
+    </p>
+    <p>All media: {{ collection.media_count }}</p>
+    <p>Photos: {{ collection.photos_count }}</p>
+    <p>Videos: {{ collection.videos_count }}</p>
+    <p>{{ collection.private ? "Private collection" : "Public collection" }}</p>
+  </mat-card-content>
+  <mat-card-footer class="example-card-footer"> </mat-card-footer> </mat-card
+>}

@@ -1,7 +1,7 @@
 import { Injectable, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationParams, ErrorResponse } from 'pexels';
-import { from, map, catchError, of } from 'rxjs';
+import { from, map, catchError, of, Observable } from 'rxjs';
 import {
   CollectionsWithTotalResults,
   CollectionMediaWidthTotalResults,
@@ -16,33 +16,29 @@ export class CollectionsService {
 
   getAllCollections(
     params?: PaginationParams
-  ): Signal<ErrorResponse | CollectionsWithTotalResults | undefined> {
-    return toSignal(
-      from(
-        this.client.collections.all({
-          page: params?.page || 1,
-          per_page: params?.per_page || 5,
-        })
-      ).pipe(
-        map((response) => response as CollectionsWithTotalResults),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  ): Observable<ErrorResponse | CollectionsWithTotalResults> {
+    return from(
+      this.client.collections.all({
+        page: params?.page || 1,
+        per_page: params?.per_page || 5,
+      })
+    ).pipe(
+      map((response) => response as CollectionsWithTotalResults),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 
   getFeaturedCollections(
     params?: PaginationParams
-  ): Signal<ErrorResponse | CollectionsWithTotalResults | undefined> {
-    return toSignal(
-      from(
-        this.client.collections.featured({
-          page: params?.page || 1,
-          per_page: params?.per_page || 5,
-        })
-      ).pipe(
-        map((response) => response as CollectionsWithTotalResults),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  ): Observable<ErrorResponse | CollectionsWithTotalResults> {
+    return from(
+      this.client.collections.featured({
+        page: params?.page || 1,
+        per_page: params?.per_page || 5,
+      })
+    ).pipe(
+      map((response) => response as CollectionsWithTotalResults),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 
@@ -50,7 +46,7 @@ export class CollectionsService {
     id: number,
     params?: PaginationParams,
     type: 'photos' | 'videos' = 'photos'
-  ): Signal<ErrorResponse | CollectionMediaWidthTotalResults | undefined> {
+  ): Observable<ErrorResponse | CollectionMediaWidthTotalResults> {
     const searchParams = {
       id,
       page: params?.page || 1,
@@ -58,11 +54,9 @@ export class CollectionsService {
       type: type,
     };
 
-    return toSignal(
-      from(this.client.collections.media(searchParams)).pipe(
-        map((response) => response as CollectionMediaWidthTotalResults),
-        catchError((error) => of(error as ErrorResponse))
-      )
+    return from(this.client.collections.media(searchParams)).pipe(
+      map((response) => response as CollectionMediaWidthTotalResults),
+      catchError((error) => of(error as ErrorResponse))
     );
   }
 }
