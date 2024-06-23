@@ -1,7 +1,7 @@
 import { Injectable, inject, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { PaginationParams, ErrorResponse } from 'pexels';
-import { from, map, catchError, of } from 'rxjs';
+import { from, map, catchError, of, Observable } from 'rxjs';
 import {
   CollectionsWithTotalResults,
   CollectionMediaWidthTotalResults,
@@ -12,45 +12,25 @@ import { PexelsService } from './pexels.service';
 export class CollectionsService {
   private pexelsService = inject(PexelsService);
 
-  client = this.pexelsService.getClient();
-
-  getAllCollections(
-    params?: PaginationParams
-  ): Signal<ErrorResponse | CollectionsWithTotalResults | undefined> {
-    return toSignal(
-      from(
-        this.client.collections.all({
-          page: params?.page || 1,
-          per_page: params?.per_page || 5,
-        })
-      ).pipe(
-        map((response) => response as CollectionsWithTotalResults),
-        catchError((error) => of(error as ErrorResponse))
-      )
-    );
-  }
-
   getFeaturedCollections(
     params?: PaginationParams
-  ): Signal<ErrorResponse | CollectionsWithTotalResults | undefined> {
-    return toSignal(
-      from(
-        this.client.collections.featured({
-          page: params?.page || 1,
-          per_page: params?.per_page || 5,
-        })
-      ).pipe(
-        map((response) => response as CollectionsWithTotalResults),
-        catchError((error) => of(error as ErrorResponse))
-      )
+  ): Observable<CollectionsWithTotalResults | null> {
+    return from(
+      this.pexelsService.getClient().collections.featured({
+        page: params?.page || 1,
+        per_page: params?.per_page || 5,
+      })
+    ).pipe(
+      map((response) => response as CollectionsWithTotalResults),
+      catchError((error) => of(null))
     );
   }
 
   getCollectionMedia(
-    id: number,
+    id: string,
     params?: PaginationParams,
     type: 'photos' | 'videos' = 'photos'
-  ): Signal<ErrorResponse | CollectionMediaWidthTotalResults | undefined> {
+  ): Observable<CollectionMediaWidthTotalResults | null> {
     const searchParams = {
       id,
       page: params?.page || 1,
@@ -58,11 +38,11 @@ export class CollectionsService {
       type: type,
     };
 
-    return toSignal(
-      from(this.client.collections.media(searchParams)).pipe(
-        map((response) => response as CollectionMediaWidthTotalResults),
-        catchError((error) => of(error as ErrorResponse))
-      )
+    return from(
+      this.pexelsService.getClient().collections.media(searchParams)
+    ).pipe(
+      map((response) => response as CollectionMediaWidthTotalResults),
+      catchError((error) => of(null))
     );
   }
 }

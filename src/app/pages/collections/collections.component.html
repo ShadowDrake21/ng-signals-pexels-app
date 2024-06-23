@@ -1,1 +1,65 @@
-<p>collections works!</p>
+<div class="custom-container">
+  <h2 class="text-center text-2xl font-bold pb-3">Featured collections</h2>
+  @if (!loading) { @if (!errorSig() &&
+  collectionsWithTotalResultsSig()?.collections?.length) {
+  <div>
+    <p>
+      <span class="font-bold">Total collections: </span
+      >{{ collectionsWithTotalResultsSig()?.total_results }}
+    </p>
+  </div>
+  <div class="grid grid-cols-3 gap-5 py-5">
+    @for (collection of collectionsWithTotalResultsSig()?.collections; track
+    collection.id) {
+    <a
+      class="w-full h-full block"
+      [routerLink]="['/single-collection', collection.id]"
+    >
+      <mat-card class="collection-card px-3 pt-1 pb-3" appearance="outlined">
+        <mat-card-header class="w-full flex justify-center">
+          <mat-card-title class="pb-2">{{ collection.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="text-center">
+          <p *ngIf="collection.description">
+            <span class="font-bold">Description:</span>
+            {{ collection.description }}
+          </p>
+          <p>
+            <span class="font-bold">All media:</span>
+            {{ collection.media_count }}
+          </p>
+          <p>
+            <span class="font-bold">Photos:</span>
+            {{ collection.photos_count }}
+          </p>
+          <p>
+            <span class="font-bold">Videos:</span>
+            {{ collection.videos_count }}
+          </p>
+          <p>
+            <span class="font-bold">{{
+              collection.private ? "Private collection" : "Public collection"
+            }}</span>
+          </p>
+        </mat-card-content>
+        <mat-card-footer class="example-card-footer">
+        </mat-card-footer> </mat-card></a
+    >}
+  </div>
+  <mat-paginator
+    [length]="collectionsWithTotalResultsSig()?.total_results"
+    [pageSize]="9"
+    [pageSizeOptions]="[9, 15]"
+    (page)="onPaginatorChange($event)"
+  >
+  </mat-paginator
+  >}@else if(errorSig()) {
+  <div class="flex justify-center py-10">
+    <app-error-template errorType="videos"></app-error-template>
+  </div>
+  }} @else {
+  <div class="flex justify-center py-10">
+    <app-loading-template type="collections"></app-loading-template>
+  </div>
+  }
+</div>

@@ -1,1 +1,26 @@
-<p>single-collection works!</p>
+<section class="search-part">
+  <div class="custom-container">
+    @if(!loading) {
+    <mat-tab-group>
+      <mat-tab label="Photos"
+        ><app-single-collection-photos
+          [photos]="collectionPhotosSig()"
+          [error]="collectionPhotosErrorSig()"
+          (paginationChange)="onPaginatorChange($event, 'photos')"
+        ></app-single-collection-photos
+      ></mat-tab>
+      <mat-tab label="Videos"
+        ><app-single-collection-videos
+          [videos]="collectionVideosSig()"
+          [error]="collectionVideosErrorSig()"
+          (paginationChange)="onPaginatorChange($event, 'videos')"
+        ></app-single-collection-videos
+      ></mat-tab>
+    </mat-tab-group>
+    } @else {
+    <div class="single-collection__wrapper flex justify-center items-center">
+      <app-loading-template type="single-collection"></app-loading-template>
+    </div>
+    }
+  </div>
+</section>

@@ -1,11 +1,4 @@
-import {
-  Component,
-  effect,
-  input,
-  OnInit,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +9,10 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PhotoMiniatureComponent } from '../../../../shared/components/photo-miniature/photo-miniature.component';
 import { LoadingTemplateComponent } from '../../../../shared/components/loading-template/loading-template.component';
 import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
+import {
+  resetPageSettings,
+  updatePageSettings,
+} from '../../../../shared/utils/pagination.utils';
 
 @Component({
   selector: 'app-search-photos',
@@ -34,35 +31,29 @@ import { ErrorTemplateComponent } from '../../../../shared/components/error-temp
   templateUrl: './search-photos.component.html',
   styleUrl: './search-photos.component.scss',
 })
-export class SearchPhotosComponent implements OnInit {
+export class SearchPhotosComponent {
   photosWithTotalResultsSig = input.required<PhotosWithTotalResults | null>({
     alias: 'photos',
   });
+
   errorSig = input.required<string>({ alias: 'error' });
   loading = input.required<boolean>();
   currentPageSig = signal<number>(0);
   pageSizeSig = signal<number>(10);
 
+  paginationChange = output<PageEvent>();
+
   constructor() {
     effect(
       () => {
-        this.resetSettings();
+        resetPageSettings(this.pageSizeSig, this.currentPageSig, 10);
       },
       { allowSignalWrites: true }
     );
   }
 
-  ngOnInit(): void {}
-
-  paginationChange = output<PageEvent>();
   onPaginatorChange(event: PageEvent) {
     this.paginationChange.emit(event);
-    this.pageSizeSig.update((prev) => event.pageSize);
-    this.currentPageSig.update((prev) => event.pageIndex);
-  }
-
-  resetSettings() {
-    this.pageSizeSig() !== 10 && this.pageSizeSig.update((prev) => 10);
-    this.currentPageSig() !== 0 && this.currentPageSig.update((prev) => 0);
+    updatePageSettings(event, this.pageSizeSig, this.currentPageSig);
   }
 }
