@@ -24,9 +24,5 @@ export class VideoMiniatureComponent {
     const modalRef = this.modal.open(VideoModalComponent, {
       data: { item: this.video() },
     });
-
-    modalRef.afterClosed().subscribe((result) => {
-      console.log(`Modal result: ${result}`);
-    });
   }
 }

@@ -5,6 +5,10 @@ import { Videos } from 'pexels';
 import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../../../shared/components/loading-template/loading-template.component';
 import { VideoMiniatureComponent } from '../../../../shared/components/video-miniature/video-miniature.component';
+import {
+  resetPageSettings,
+  updatePageSettings,
+} from '../../../../shared/utils/pagination.utils';
 
 @Component({
   selector: 'app-search-videos',
@@ -33,7 +37,7 @@ export class SearchVideosComponent {
   constructor() {
     effect(
       () => {
-        this.resetSettings();
+        resetPageSettings(this.pageSizeSig, this.currentPageSig, 6);
       },
       { allowSignalWrites: true }
     );
@@ -41,11 +45,6 @@ export class SearchVideosComponent {
 
   onPaginatorChange(event: PageEvent) {
     this.paginationChange.emit(event);
-    this.pageSizeSig.update((prev) => event.pageSize);
-    this.currentPageSig.update((prev) => event.pageIndex);
-  }
-  resetSettings() {
-    this.pageSizeSig() !== 6 && this.pageSizeSig.update((prev) => 6);
-    this.currentPageSig() !== 0 && this.currentPageSig.update((prev) => 0);
+    updatePageSettings(event, this.pageSizeSig, this.currentPageSig);
   }
 }

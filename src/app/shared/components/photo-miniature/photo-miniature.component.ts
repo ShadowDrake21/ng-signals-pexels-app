@@ -22,9 +22,5 @@ export class PhotoMiniatureComponent {
     const modalRef = this.modal.open(PhotoModalComponent, {
       data: { item: this.photo() },
     });
-
-    modalRef.afterClosed().subscribe((result) => {
-      console.log(`Modal result: ${result}`);
-    });
   }
 }

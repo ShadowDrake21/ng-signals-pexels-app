@@ -7,6 +7,10 @@ import { ErrorTemplateComponent } from '../../shared/components/error-template/e
 import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
 import { VideoMiniatureComponent } from '../../shared/components/video-miniature/video-miniature.component';
 import { errorMessage } from '../../shared/contents/errors.contents';
+import {
+  resetPageSettings,
+  updatePageSettings,
+} from '../../shared/utils/pagination.utils';
 
 @Component({
   selector: 'app-popular-videos-page',
@@ -55,9 +59,7 @@ export class PopularVideosPageComponent implements OnInit, OnDestroy {
         delay(3000),
         tap(() => {
           this.loading = false;
-          this.pageSizeSig() !== 6 && this.pageSizeSig.update((prev) => 6);
-          this.currentPageSig() !== 0 &&
-            this.currentPageSig.update((prev) => 0);
+          resetPageSettings(this.pageSizeSig, this.currentPageSig, 6);
         }),
         catchError((error: ErrorResponse) => {
           this.errorSig.set(errorMessage);
@@ -77,8 +79,7 @@ export class PopularVideosPageComponent implements OnInit, OnDestroy {
       })
       .pipe(
         tap(() => {
-          this.pageSizeSig.update((prev) => event.pageSize);
-          this.currentPageSig.update((prev) => event.pageIndex);
+          updatePageSettings(event, this.pageSizeSig, this.currentPageSig);
         })
       )
       .subscribe((result) => {

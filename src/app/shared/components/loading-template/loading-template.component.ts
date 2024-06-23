@@ -12,5 +12,6 @@ export class LoadingTemplateComponent {
     | 'page'
     | 'search'
     | 'popular-videos'
-    | 'collections';
+    | 'collections'
+    | 'single-collection';
 }

@@ -1,0 +1,38 @@
+<div class="py-5">
+  @if (!errorSig() && photosTransformedSig()?.videos?.length) {
+  <div>
+    <p>
+      <span class="font-bold">Total videos: </span
+      >{{ photosTransformedSig()?.total_results }}
+    </p>
+  </div>
+  <div class="grid grid-cols-2 gap-4 my-4">
+    @for (video of photosTransformedSig()?.videos; track video.id) {
+    <app-video-miniature [video]="video"></app-video-miniature>
+    }
+  </div>
+  <mat-paginator
+    [length]="photosTransformedSig()?.total_results"
+    [pageIndex]="currentPageSig()"
+    [pageSize]="pageSizeSig()"
+    [pageSizeOptions]="[6, 10]"
+    (page)="onPaginatorChange($event)"
+  >
+  </mat-paginator>
+  }@else if(!errorSig() &&photosTransformedSig()?.total_results === 0) {
+  <div class="flex justify-center relative">
+    <div
+      class="absolute top-1/2 left-1/2 p-3 bg-white"
+      style="transform: translate(-50%, -50%)"
+    >
+      <h4 class="text-2xl font-bold">Nothing is here!</h4>
+    </div>
+    <img class="w-96" src="/assets/images/search-img-3.png" alt="search img" />
+  </div>
+  } @else if(errorSig()) {
+  {{ errorSig() }}
+  <div class="flex justify-center py-10">
+    <app-error-template errorType="videos"></app-error-template>
+  </div>
+  }
+</div>
