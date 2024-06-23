@@ -118,12 +118,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
           if (this.typeSig() === 'photos') {
             return this.photosService
               .searchPhotos(term)
-              .pipe(catchError((error) => this.catchErrorInSearch()));
+              .pipe(catchError(() => this.catchErrorInSearch()));
           } else {
             console.log('search videos');
             return this.videosService
               .searchVideos(term, { per_page: 6 })
-              .pipe(catchError((error) => this.catchErrorInSearch()));
+              .pipe(catchError(() => this.catchErrorInSearch()));
           }
         }),
 
