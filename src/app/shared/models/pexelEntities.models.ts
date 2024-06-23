@@ -7,9 +7,10 @@ import {
 } from 'pexels';
 
 export type CollectionsWithTotalResults = {
+  collections: Collection[];
   page: number;
   per_page: number;
-  collections: Collection[];
+  total_results: number;
 };
 
 export type CollectionMediaWidthTotalResults = {
