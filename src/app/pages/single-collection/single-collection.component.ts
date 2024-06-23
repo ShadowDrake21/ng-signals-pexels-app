@@ -79,7 +79,6 @@ export class SingleCollectionComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((response) => {
-        console.log('response', response);
         this.collectionPhotosSig.set(response.photos);
         this.collectionVideosSig.set(response.videos);
       });

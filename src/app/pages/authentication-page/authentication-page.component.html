@@ -1,1 +1,110 @@
-<p>authentication-page works!</p>
+<section class="authentication">
+  <div class="custom-container">
+    <div class="flex flex-col items-center">
+      <img src="/assets/logo.png" alt="logo" class="max-w-96" />
+
+      <div class="w-full flex justify-center gap-10">
+        <form
+          [formGroup]="signInForm"
+          (ngSubmit)="onSignInFormSubmit()"
+          class="flex flex-col max-w-96 w-full"
+        >
+          <h3>Sign-in form</h3>
+          <mat-form-field>
+            <mat-label>Enter your email</mat-label>
+            <input
+              matInput
+              placeholder="pat@example.com"
+              formControlName="email"
+              (blur)="updateErrorMessage()"
+              required
+            />
+            @if (this.signInForm.controls.email.invalid) {
+            <mat-error>{{ signInErrorSignals.email() }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Enter your password</mat-label>
+            <input
+              matInput
+              placeholder="******"
+              formControlName="password"
+              (blur)="updateErrorMessage()"
+              required
+            />
+            @if (this.signInForm.controls.password.invalid) {
+            <mat-error>{{ signInErrorSignals.password() }}</mat-error>
+            }
+          </mat-form-field>
+          <button mat-stroked-button type="submit" color="primary">
+            Sign-in
+          </button>
+        </form>
+        <form
+          [formGroup]="signUpForm"
+          (ngSubmit)="onSignUpFormSubmit()"
+          class="flex flex-col max-w-96 w-full"
+        >
+          <h3>Sign-up form</h3>
+          <mat-form-field>
+            <mat-label>Enter your name</mat-label>
+            <input
+              matInput
+              placeholder="Dmytro"
+              formControlName="name"
+              (blur)="updateErrorMessage()"
+              required
+            />
+            @if (this.signUpForm.controls.name.invalid) {
+            <mat-error>{{ signUpErrorSignals.name() }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Enter your email</mat-label>
+            <input
+              matInput
+              placeholder="pat@example.com"
+              formControlName="email"
+              (blur)="updateErrorMessage()"
+              required
+            />
+            @if (this.signUpForm.controls.email.invalid) {
+            <mat-error>{{ signUpErrorSignals.email() }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Enter your password</mat-label>
+            <input
+              matInput
+              placeholder="******"
+              formControlName="password"
+              type="password"
+              (blur)="updateErrorMessage()"
+              required
+            />
+            @if (this.signUpForm.controls.password.invalid) {
+            <mat-error>{{ signUpErrorSignals.password() }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Confirm password</mat-label>
+            <input
+              matInput
+              placeholder="******"
+              formControlName="confirmPassword"
+              type="password"
+              (blur)="updateErrorMessage()"
+              required
+            />
+            @if (this.signUpForm.controls.confirmPassword.invalid) {
+            <mat-error>{{ signUpErrorSignals.password() }}</mat-error>
+            }
+          </mat-form-field>
+          <button mat-stroked-button type="submit" color="primary">
+            Sign-up
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
