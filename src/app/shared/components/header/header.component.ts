@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -27,6 +34,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private themeService = inject(ThemeService);
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
+
+  isAuthHeader = input.required<boolean>();
 
   themeSig = signal<string>('');
   isSignOutSig = signal<boolean>(false);

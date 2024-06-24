@@ -1,10 +1,15 @@
 import { Routes } from '@angular/router';
 import { AuthenticationPageComponent } from './pages/authentication-page/authentication-page.component';
 import { authGuard } from './core/guards/auth.guard';
+import { notAuthGuard } from './core/guards/not-auth.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/authentication' },
-  { path: 'authentication', component: AuthenticationPageComponent },
+  {
+    path: 'authentication',
+    component: AuthenticationPageComponent,
+    canActivate: [notAuthGuard],
+  },
   {
     path: 'home',
     loadComponent: () =>

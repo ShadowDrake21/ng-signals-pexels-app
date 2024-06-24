@@ -2,9 +2,10 @@
   <mat-toolbar>
     <div class="custom-container header-toolbar__inner">
       <div class="flex items-center gap-2">
+        @if (!isAuthHeader()) {
         <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>menu</mat-icon>
-        </button>
+          <mat-icon>menu</mat-icon></button
+        >}
         <mat-menu #menu="matMenu">
           <a
             class="menu-link"
@@ -43,13 +44,15 @@
             <span>Collections</span>
           </a>
         </mat-menu>
-        <span>Signals Pexels App by Drake21</span>
+        <a routerLink="/home">Signals Pexels App by Drake21</a>
         <img class="w-10" src="/assets/header-logo.png" alt="logo" />
       </div>
       <div class="flex gap-4 items-center">
+        @if (isSignOutSig()){
         <a routerLink="/user-favourites" mat-icon-button>
           <mat-icon>favorite</mat-icon>
         </a>
+        }
         <div class="flex items-center">
           <mat-slide-toggle
             (toggleChange)="handleToggleTheme()"
@@ -65,7 +68,11 @@
         @if (isSignOutSig()) {
         <button mat-icon-button (click)="onSignOut()">
           <mat-icon>logout</mat-icon></button
-        >}
+        >} @else {
+        <a mat-icon-button routerLink="/authentication">
+          <mat-icon>login</mat-icon></a
+        >
+        }
       </div>
     </div>
   </mat-toolbar>
