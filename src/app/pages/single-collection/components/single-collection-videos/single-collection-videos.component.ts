@@ -4,7 +4,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../../../shared/components/loading-template/loading-template.component';
 import { Photo, Videos, Video } from 'pexels';
-import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexelEntities.models';
+import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexelEntities.model';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
 
