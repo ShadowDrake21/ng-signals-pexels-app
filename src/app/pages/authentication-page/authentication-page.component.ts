@@ -16,7 +16,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { delay, merge, Observable, of, tap } from 'rxjs';
+import { catchError, delay, merge, Observable, of, tap } from 'rxjs';
 import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -24,7 +24,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { FirebaseError } from '@angular/fire/app';
+import { SnackbarTemplateComponent } from '../../shared/components/snackbar-template/snackbar-template.component';
 
 type SignInControlNames = 'email' | 'password';
 type SignUpControlNames = 'name' | 'email' | 'password' | 'confirmPassword';
@@ -50,6 +52,7 @@ type SignUpControlNames = 'name' | 'email' | 'password' | 'confirmPassword';
 export class AuthenticationPageComponent {
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -157,7 +160,14 @@ export class AuthenticationPageComponent {
           delay(500),
           tap(() => (this.loading = false))
         )
-        .subscribe({ next: () => this.router.navigate(['/home']) });
+        .subscribe({
+          next: () => this.router.navigate(['/home']),
+          error: (error: FirebaseError) => {
+            this.openSnackBar(error.message);
+            this.signInForm.reset();
+            this.loading = false;
+          },
+        });
     } else {
       return;
     }
@@ -174,9 +184,23 @@ export class AuthenticationPageComponent {
           delay(500),
           tap(() => (this.loading = false))
         )
-        .subscribe({ next: () => this.router.navigate(['/home']) });
+        .subscribe({
+          next: () => this.router.navigate(['/home']),
+          error: (error: FirebaseError) => {
+            this.openSnackBar(error.message);
+            this.loading = false;
+          },
+        });
     } else {
       return;
     }
+  }
+
+  private openSnackBar(message: string) {
+    this.snackBar.openFromComponent(SnackbarTemplateComponent, {
+      data: { error: message },
+      duration: 5000,
+      horizontalPosition: 'start',
+    });
   }
 }

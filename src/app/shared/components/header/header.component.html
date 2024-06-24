@@ -47,9 +47,9 @@
         <img class="w-10" src="/assets/header-logo.png" alt="logo" />
       </div>
       <div class="flex gap-4 items-center">
-        <button mat-icon-button>
+        <a routerLink="/user-favourites" mat-icon-button>
           <mat-icon>favorite</mat-icon>
-        </button>
+        </a>
         <div class="flex items-center">
           <mat-slide-toggle
             (toggleChange)="handleToggleTheme()"
@@ -62,6 +62,10 @@
             }
           </button>
         </div>
+        @if (isSignOutSig()) {
+        <button mat-icon-button (click)="onSignOut()">
+          <mat-icon>logout</mat-icon></button
+        >}
       </div>
     </div>
   </mat-toolbar>

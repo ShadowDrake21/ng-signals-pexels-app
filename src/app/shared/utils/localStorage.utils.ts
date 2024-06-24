@@ -12,3 +12,7 @@ export const retrieveItemFromLC = (key: string): any => {
 
   return item;
 };
+
+export const removeItemFromLC = (key: string) => {
+  localStorage.removeItem(key);
+};
