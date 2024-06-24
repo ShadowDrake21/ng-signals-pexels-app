@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthenticationPageComponent } from './pages/authentication-page/authentication-page.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/authentication' },
@@ -38,6 +39,14 @@ export const routes: Routes = [
       import('./pages/single-collection/single-collection.component').then(
         (c) => c.SingleCollectionComponent
       ),
+  },
+  {
+    path: 'user-favourites',
+    loadComponent: () =>
+      import('./pages/user-favourites/user-favourites.component').then(
+        (c) => c.UserFavouritesComponent
+      ),
+    canActivate: [authGuard],
   },
   {
     path: '**',

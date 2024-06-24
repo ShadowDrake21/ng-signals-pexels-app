@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
   User,
   user,
@@ -11,6 +12,7 @@ import {
 } from '@angular/fire/auth';
 import { IAuthentication, IUserDataToLC } from '../../shared/models/auth.model';
 import {
+  BehaviorSubject,
   catchError,
   from,
   map,
@@ -19,7 +21,11 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import { setItemInLC } from '../../shared/utils/localStorage.utils';
+import {
+  removeItemFromLC,
+  retrieveItemFromLC,
+  setItemInLC,
+} from '../../shared/utils/localStorage.utils';
 import { DEFAULT_USER_IMG } from '../constants/firebase.constants';
 import { formAuthLocalStorageObj } from '../utils/auth.utils';
 import { FirebaseError } from '@angular/fire/app';
@@ -27,6 +33,26 @@ import { FirebaseError } from '@angular/fire/app';
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private auth = inject(Auth);
+  isUserAuth = new BehaviorSubject<boolean>(false);
+
+  constructor() {
+    this.autoAuth();
+
+    this.isUserAuth.subscribe((value) =>
+      console.log('isUserAuth', value, this.auth.currentUser)
+    );
+  }
+
+  checkUserAuth(): boolean {
+    console.log('currentUser', this.auth.currentUser);
+    return !!this.auth.currentUser;
+  }
+
+  autoAuth() {
+    if (retrieveItemFromLC('user')) {
+      this.isUserAuth.next(true);
+    }
+  }
 
   signUp(data: IAuthentication): Observable<UserCredential> {
     return from(
@@ -46,6 +72,7 @@ export class AuthenticationService {
                 displayName: data.name!,
               };
               setItemInLC('user', formAuthLocalStorageObj(updatedUser as User));
+              this.isUserAuth.next(true);
             }),
             map(() => userCredential)
           );
@@ -63,8 +90,20 @@ export class AuthenticationService {
     return from(
       signInWithEmailAndPassword(this.auth, data.email, data.password)
     ).pipe(
-      tap(({ user }) => setItemInLC('user', formAuthLocalStorageObj(user))),
+      tap(({ user }) => {
+        setItemInLC('user', formAuthLocalStorageObj(user));
+        this.isUserAuth.next(true);
+      }),
       catchError((error) => throwError(() => error))
+    );
+  }
+
+  signOut(): Observable<void> {
+    return from(signOut(this.auth)).pipe(
+      tap(() => {
+        this.isUserAuth.next(false);
+        removeItemFromLC('user');
+      })
     );
   }
 }

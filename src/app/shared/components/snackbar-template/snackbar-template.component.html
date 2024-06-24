@@ -1,10 +1,12 @@
-<span class="example-pizza-party" matSnackBarLabel> Pizza party!!! </span>
-<span matSnackBarActions>
-  <button
-    mat-button
-    matSnackBarAction
-    (click)="snackBarRef.dismissWithAction()"
-  >
-    🍕
-  </button>
-</span>
+<div class="flex gap-4">
+  <span matSnackBarLabel>{{ data.error }}</span>
+  <span matSnackBarActions>
+    <button
+      mat-button
+      matSnackBarAction
+      (click)="snackBarRef.dismissWithAction()"
+    >
+      Close
+    </button>
+  </span>
+</div>
