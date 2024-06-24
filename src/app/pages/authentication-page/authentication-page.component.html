@@ -3,6 +3,7 @@
     <div class="flex flex-col items-center">
       <img src="/assets/logo.png" alt="logo" class="max-w-80 mb-4" />
 
+      @if (!loading) {
       <div class="w-full flex justify-center gap-10">
         <form
           [formGroup]="signInForm"
@@ -133,6 +134,7 @@
           </button>
         </div>
       </div>
+      } @else { <mat-progress-bar mode="indeterminate"></mat-progress-bar>}
     </div>
   </div>
 </section>

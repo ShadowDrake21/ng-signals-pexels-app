@@ -1,4 +1,10 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
@@ -10,12 +16,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { merge, Observable, of } from 'rxjs';
+import { delay, merge, Observable, of, tap } from 'rxjs';
 import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { PasswordValidator } from './validators/password.validators';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
+import { Router } from '@angular/router';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 type SignInControlNames = 'email' | 'password';
 type SignUpControlNames = 'name' | 'email' | 'password' | 'confirmPassword';
@@ -32,11 +41,16 @@ type SignUpControlNames = 'name' | 'email' | 'password' | 'confirmPassword';
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
   ],
   templateUrl: './authentication-page.component.html',
   styleUrl: './authentication-page.component.scss',
 })
 export class AuthenticationPageComponent {
+  private authenticationService = inject(AuthenticationService);
+  private router = inject(Router);
+
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
@@ -72,6 +86,8 @@ export class AuthenticationPageComponent {
     password: signal(''),
     confirmPassword: signal(''),
   };
+
+  loading: boolean = false;
 
   constructor() {
     this.initializeErrorHandling('sign-in');
@@ -131,10 +147,36 @@ export class AuthenticationPageComponent {
   }
 
   onSignInFormSubmit() {
-    console.log('SignInForm', this.signInForm.value);
+    const { email, password } = this.signInForm.value;
+    this.loading = true;
+
+    if (email && password) {
+      this.authenticationService
+        .signIn({ email, password })
+        .pipe(
+          delay(500),
+          tap(() => (this.loading = false))
+        )
+        .subscribe({ next: () => this.router.navigate(['/home']) });
+    } else {
+      return;
+    }
   }
 
   onSignUpFormSubmit() {
-    console.log('SignUpForm', this.signUpForm.value);
+    const { name, email, password } = this.signUpForm.value;
+    this.loading = true;
+
+    if (name && email && password) {
+      this.authenticationService
+        .signUp({ name, email, password })
+        .pipe(
+          delay(500),
+          tap(() => (this.loading = false))
+        )
+        .subscribe({ next: () => this.router.navigate(['/home']) });
+    } else {
+      return;
+    }
   }
 }
