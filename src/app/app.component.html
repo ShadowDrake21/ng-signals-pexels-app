@@ -2,7 +2,7 @@
   class="main min-h-screen"
   [ngClass]="themeSig() === 'dark' ? 'dark' : 'light'"
 >
-  <app-header></app-header>
+  <app-header [isAuthHeader]="isAuthenticationSig()"></app-header>
   <div class="content">
     <router-outlet></router-outlet>
   </div>

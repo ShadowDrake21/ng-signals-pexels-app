@@ -1,6 +1,7 @@
 import {
   Component,
   inject,
+  OnDestroy,
   OnInit,
   signal,
   WritableSignal,
@@ -16,13 +17,21 @@ import {
   Validators,
 } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, delay, merge, Observable, of, tap } from 'rxjs';
+import {
+  catchError,
+  delay,
+  merge,
+  Observable,
+  of,
+  Subscription,
+  tap,
+} from 'rxjs';
 import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FirebaseError } from '@angular/fire/app';
@@ -36,6 +45,7 @@ type SignUpControlNames = 'name' | 'email' | 'password' | 'confirmPassword';
   standalone: true,
   imports: [
     FormsModule,
+    RouterLink,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
@@ -49,7 +59,7 @@ type SignUpControlNames = 'name' | 'email' | 'password' | 'confirmPassword';
   templateUrl: './authentication-page.component.html',
   styleUrl: './authentication-page.component.scss',
 })
-export class AuthenticationPageComponent {
+export class AuthenticationPageComponent implements OnDestroy {
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
@@ -91,6 +101,8 @@ export class AuthenticationPageComponent {
   };
 
   loading: boolean = false;
+
+  private subscriptions: Subscription[] = [];
 
   constructor() {
     this.initializeErrorHandling('sign-in');
@@ -154,7 +166,7 @@ export class AuthenticationPageComponent {
     this.loading = true;
 
     if (email && password) {
-      this.authenticationService
+      const signInSubscription = this.authenticationService
         .signIn({ email, password })
         .pipe(
           delay(500),
@@ -168,6 +180,8 @@ export class AuthenticationPageComponent {
             this.loading = false;
           },
         });
+
+      this.subscriptions.push(signInSubscription);
     } else {
       return;
     }
@@ -178,7 +192,7 @@ export class AuthenticationPageComponent {
     this.loading = true;
 
     if (name && email && password) {
-      this.authenticationService
+      const signUpSubscription = this.authenticationService
         .signUp({ name, email, password })
         .pipe(
           delay(500),
@@ -191,6 +205,8 @@ export class AuthenticationPageComponent {
             this.loading = false;
           },
         });
+
+      this.subscriptions.push(signUpSubscription);
     } else {
       return;
     }
@@ -202,5 +218,9 @@ export class AuthenticationPageComponent {
       duration: 5000,
       horizontalPosition: 'start',
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

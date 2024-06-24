@@ -1,4 +1,12 @@
-import { Component, effect, input, output, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { VideoMiniatureComponent } from '../../../../shared/components/video-miniature/video-miniature.component';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
@@ -7,6 +15,7 @@ import { Photo, Videos, Video } from 'pexels';
 import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexelEntities.model';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
+import { AuthenticationService } from '../../../../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-single-collection-videos',
@@ -22,6 +31,8 @@ import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
   styleUrl: './single-collection-videos.component.scss',
 })
 export class SingleCollectionVideosComponent {
+  private authenticationService = inject(AuthenticationService);
+
   inputSig = input.required<CollectionMediaWidthTotalResults | null>({
     alias: 'videos',
   });

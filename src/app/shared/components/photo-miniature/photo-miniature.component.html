@@ -9,7 +9,7 @@
   /></a>
   <mat-card-actions class="justify-between">
     <a [href]="photo().url" target="_blank" mat-button>See on Pexels</a>
-    <button mat-button>
+    <button mat-button [disabled]="!isLikeableSig()">
       <mat-icon fontIcon="thumb_up"></mat-icon>
     </button>
   </mat-card-actions>
