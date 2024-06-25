@@ -34,10 +34,10 @@ export class PhotosService {
     );
   }
 
-  getPhoto(id: number): Observable<Photo | ErrorResponse> {
+  getPhoto(id: number): Observable<Photo | null> {
     return from(this.client.photos.show({ id })).pipe(
       map((response) => response as Photo),
-      catchError((error) => of(error as ErrorResponse))
+      catchError((error) => of(null))
     );
   }
 

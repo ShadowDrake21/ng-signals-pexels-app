@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CollectionsService } from '../../core/services/collections.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import {
   delay,
   filter,
@@ -18,15 +18,20 @@ import { LoadingTemplateComponent } from '../../shared/components/loading-templa
 import { errorMessage } from '../../shared/contents/errors.contents';
 import { SingleCollectionPhotosComponent } from './components/single-collection-photos/single-collection-photos.component';
 import { SingleCollectionVideosComponent } from './components/single-collection-videos/single-collection-videos.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-single-collection',
   standalone: true,
   imports: [
     MatTabsModule,
+    MatButtonModule,
+    MatIconModule,
     LoadingTemplateComponent,
     SingleCollectionPhotosComponent,
     SingleCollectionVideosComponent,
+    RouterLink,
   ],
   templateUrl: './single-collection.component.html',
   styleUrl: './single-collection.component.scss',

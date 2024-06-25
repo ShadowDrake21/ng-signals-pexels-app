@@ -10,7 +10,15 @@ import {
   deleteDoc,
 } from '@angular/fire/firestore';
 import { doc, setDoc } from '@firebase/firestore';
-import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
+import {
+  catchError,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { retrieveItemFromLC } from '../../shared/utils/localStorage.utils';
 import { IUserDataToLC } from '../../shared/models/auth.model';
 
@@ -59,13 +67,13 @@ export class DatabaseService {
               )
             ).pipe(
               map(() => true),
-              catchError((error) => of(false))
+              catchError(() => of(false))
             );
           } else {
             return of(false);
           }
         }),
-        catchError((error) => of(false))
+        catchError(() => of(false))
       );
     }
     return of(false);
@@ -87,5 +95,28 @@ export class DatabaseService {
     }
 
     return of(false);
+  }
+
+  getSubcollectionFromDB(type: 'photos' | 'videos'): Observable<number[]> {
+    const userInLC: IUserDataToLC | null = retrieveItemFromLC('user');
+
+    if (userInLC) {
+      return from(
+        getDocs(collection(this.firestore, 'users', userInLC.uid, type))
+      ).pipe(
+        switchMap((queryShapshot) => {
+          let resultArray: Array<any> = [];
+
+          queryShapshot.forEach((item) => {
+            resultArray.push(Object.values(item.data())[0]);
+          });
+
+          return of(resultArray);
+        }),
+        catchError((error) => of([]))
+      );
+    } else {
+      return of([]);
+    }
   }
 }

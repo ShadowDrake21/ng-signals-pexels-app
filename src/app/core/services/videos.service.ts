@@ -38,14 +38,14 @@ export class VideosService {
     );
   }
 
-  getVideo(id: number): Observable<Video | ErrorResponse> {
+  getVideo(id: number): Observable<Video | null> {
     return from(
       this.client.videos.show({
         id,
       })
     ).pipe(
       map((response) => response as Video),
-      catchError((error) => of(error as ErrorResponse))
+      catchError((error) => of(null))
     );
   }
 }

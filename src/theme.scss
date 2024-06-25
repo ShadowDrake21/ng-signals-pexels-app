@@ -50,6 +50,47 @@ $dark-text-color: #333;
   color: $light-text-color;
 }
 
+.dark
+  .mdc-text-field--filled:not(.mdc-text-field--disabled)
+  .mdc-text-field__input {
+  caret-color: #fff;
+}
+
+.dark
+  .mdc-text-field--filled:not(.mdc-text-field--disabled)
+  .mdc-line-ripple::after {
+  border-bottom-color: #fff;
+}
+
+.dark
+  .mdc-text-field--filled:not(.mdc-text-field--disabled).mdc-text-field--focused
+  .mdc-floating-label,
+.dark
+  .mdc-text-field--filled:not(.mdc-text-field--disabled).mdc-text-field--focused
+  .mdc-floating-label--float-above {
+  color: #fff;
+}
+
+.dark .mat-mdc-tab .mdc-tab__ripple::before,
+.dark .mat-mdc-tab.mdc-tab--active .mdc-tab__ripple::before,
+.mat-mdc-tab.mdc-tab--active .mat-ripple-element {
+  background-color: transparent;
+}
+
+.dark .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
+.dark .mat-mdc-tab.mdc-tab--active:focus .mdc-tab__text-label,
+.dark .mat-mdc-tab.mdc-tab--active:hover .mdc-tab__text-label {
+  color: $light-bg-color;
+}
+
+.dark .mat-mdc-tab .mdc-tab-indicator__content--underline,
+.dark .mat-mdc-tab.mdc-tab--active:hover .mdc-tab-indicator__content--underline,
+.dark
+  .mat-mdc-tab.mdc-tab--active:focus
+  .mdc-tab-indicator__content--underline {
+  border-color: $light-bg-color;
+}
+
 // Light mode
 .light {
   @include mat.all-component-themes($light-theme);

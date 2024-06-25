@@ -16,6 +16,7 @@ import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexe
 import { MatGridListModule } from '@angular/material/grid-list';
 import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
 import { AuthenticationService } from '../../../../core/authentication/authentication.service';
+import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
 
 @Component({
   selector: 'app-single-collection-videos',
@@ -26,6 +27,7 @@ import { AuthenticationService } from '../../../../core/authentication/authentic
     LoadingTemplateComponent,
     MatPaginatorModule,
     MatGridListModule,
+    NoResultsComponent,
   ],
   templateUrl: './single-collection-videos.component.html',
   styleUrl: './single-collection-videos.component.scss',

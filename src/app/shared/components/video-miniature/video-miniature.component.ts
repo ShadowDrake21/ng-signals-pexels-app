@@ -4,6 +4,7 @@ import {
   inject,
   input,
   OnInit,
+  output,
   signal,
 } from '@angular/core';
 import { Video } from 'pexels';
@@ -46,6 +47,8 @@ export class VideoMiniatureComponent implements OnInit {
   isLikeableSig = signal<boolean>(true);
 
   getAppropriateVideo = getAppropriateVideo;
+
+  removingFromFavs = output<number>();
 
   private subscriptions: Subscription[] = [];
 
@@ -97,6 +100,7 @@ export class VideoMiniatureComponent implements OnInit {
           if (response) {
             this.openSnackBar(`Video removed from favourites`);
             this.checkFavouriteMark();
+            this.removingFromFavs.emit(this.video().id);
           } else {
             this.openSnackBar(`Error while removing from favourites`);
           }
