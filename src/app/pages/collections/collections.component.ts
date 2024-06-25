@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ErrorResponse } from 'pexels';
 import { map, delay, tap, catchError, of, Subscription } from 'rxjs';
 import { errorMessage } from '../../shared/contents/errors.contents';
-import { CollectionsWithTotalResults } from '../../shared/models/pexelEntities.models';
+import { CollectionsWithTotalResults } from '../../shared/models/pexelEntities.model';
 import { NgIf } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';

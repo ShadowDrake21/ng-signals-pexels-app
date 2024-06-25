@@ -1,4 +1,12 @@
-import { Component, effect, input, output, signal } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Videos } from 'pexels';
@@ -9,6 +17,7 @@ import {
   resetPageSettings,
   updatePageSettings,
 } from '../../../../shared/utils/pagination.utils';
+import { AuthenticationService } from '../../../../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-search-videos',
@@ -23,6 +32,8 @@ import {
   styleUrl: './search-videos.component.scss',
 })
 export class SearchVideosComponent {
+  private authenticationService = inject(AuthenticationService);
+
   errorSig = input.required<string>({ alias: 'error' });
   videosWithTotalResultsSig = input.required<Videos | null>({
     alias: 'videos',

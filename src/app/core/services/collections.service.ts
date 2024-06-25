@@ -5,7 +5,7 @@ import { from, map, catchError, of, Observable } from 'rxjs';
 import {
   CollectionsWithTotalResults,
   CollectionMediaWidthTotalResults,
-} from '../../shared/models/pexelEntities.models';
+} from '../../shared/models/pexelEntities.model';
 import { PexelsService } from './pexels.service';
 
 @Injectable({ providedIn: 'root' })

@@ -1,1 +1,140 @@
-<p>authentication-page works!</p>
+<section class="authentication">
+  <div class="custom-container">
+    <div class="flex flex-col items-center">
+      <img src="/assets/logo.png" alt="logo" class="max-w-80 mb-4" />
+
+      @if (!loading) {
+      <div class="w-full flex justify-center gap-10">
+        <form
+          [formGroup]="signInForm"
+          (ngSubmit)="onSignInFormSubmit()"
+          class="flex flex-col max-w-96 w-full flex-shrink-0"
+        >
+          <h3 class="font-bold text-center text-xl pb-3">Sign-in form</h3>
+          <mat-form-field>
+            <mat-label>Enter your email</mat-label>
+            <input
+              matInput
+              placeholder="pat@example.com"
+              formControlName="email"
+              required
+            />
+            @if (this.signInForm.controls.email.invalid) {
+            <mat-error>{{ signInErrorSignals.email() }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Enter your password</mat-label>
+            <input
+              matInput
+              placeholder="******"
+              formControlName="password"
+              type="password"
+              required
+            />
+            @if (this.signInForm.controls.password.invalid) {
+            <mat-error>{{ signInErrorSignals.password() }}</mat-error>
+            }
+          </mat-form-field>
+          <button
+            mat-stroked-button
+            type="submit"
+            color="primary"
+            [disabled]="signInForm.invalid"
+          >
+            Sign-in
+          </button>
+        </form>
+        <mat-divider [vertical]="true"></mat-divider>
+        <form
+          [formGroup]="signUpForm"
+          (ngSubmit)="onSignUpFormSubmit()"
+          class="flex flex-col max-w-96 w-full flex-shrink-0"
+        >
+          <h3 class="font-bold text-center text-xl pb-3">Sign-up form</h3>
+          <mat-form-field>
+            <mat-label>Enter your name</mat-label>
+            <input
+              matInput
+              placeholder="Dmytro"
+              formControlName="name"
+              required
+            />
+            @if (this.signUpForm.controls.name.invalid ) {
+            <mat-error>{{ signUpErrorSignals.name() }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Enter your email</mat-label>
+            <input
+              matInput
+              placeholder="pat@example.com"
+              formControlName="email"
+              required
+            />
+            @if (this.signUpForm.controls.email.invalid) {
+            <mat-error>{{ signUpErrorSignals.email() }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Enter your password</mat-label>
+            <input
+              matInput
+              placeholder="******"
+              formControlName="password"
+              type="password"
+              required
+            />
+            @if (this.signUpForm.controls.password.invalid) {
+            <mat-error>{{ signUpErrorSignals.password() }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Confirm password</mat-label>
+            <input
+              matInput
+              placeholder="******"
+              formControlName="confirmPassword"
+              type="password"
+              required
+            />
+            @if (this.signUpForm.controls.confirmPassword.invalid) {
+            <mat-error>{{ signUpErrorSignals.password() }}</mat-error>
+            }
+          </mat-form-field>
+          @if (this.signUpForm.controls.password.dirty &&
+          this.signUpForm.controls.confirmPassword.dirty &&
+          this.signUpForm.value.password !==
+          this.signUpForm.value.confirmPassword) {
+          <mat-error class="pb-4">Passwords don't match</mat-error>}
+          <button
+            mat-stroked-button
+            type="submit"
+            color="primary"
+            [disabled]="
+              signUpForm.invalid ||
+              this.signUpForm.value.password !==
+                this.signUpForm.value.confirmPassword
+            "
+          >
+            Sign-up
+          </button>
+        </form>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div
+          class="flex justify-center items-center max-w-96 w-full flex-shrink-0"
+        >
+          <a
+            mat-stroked-button
+            color="primary"
+            class="w-full"
+            routerLink="/home"
+          >
+            Continue as a guest <mat-icon fontIcon="person"></mat-icon>
+          </a>
+        </div>
+      </div>
+      } @else { <mat-progress-bar mode="indeterminate"></mat-progress-bar>}
+    </div>
+  </div>
+</section>
