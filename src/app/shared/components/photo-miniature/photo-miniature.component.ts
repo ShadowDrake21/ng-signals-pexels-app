@@ -5,6 +5,7 @@ import {
   input,
   OnDestroy,
   OnInit,
+  output,
   signal,
 } from '@angular/core';
 import { Photo } from 'pexels';
@@ -43,6 +44,8 @@ export class PhotoMiniatureComponent implements OnInit, OnDestroy {
 
   markedAsFavourite$!: Observable<boolean>;
   isLikeableSig = signal<boolean>(true);
+
+  removingFromFavs = output<number>();
 
   private subscriptions: Subscription[] = [];
 
@@ -94,6 +97,7 @@ export class PhotoMiniatureComponent implements OnInit, OnDestroy {
           if (response) {
             this.openSnackBar(`Photo removed from favourites `);
             this.checkFavouriteMark();
+            this.removingFromFavs.emit(this.photo().id);
           } else {
             this.openSnackBar(`Error while removing from favourites`);
           }

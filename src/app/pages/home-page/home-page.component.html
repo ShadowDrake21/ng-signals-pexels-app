@@ -3,14 +3,14 @@
   <div class="list-section">
     @if (!isPhotosError) {
     <app-photos-list [photos]="photosSig()"></app-photos-list>
-    <ui-primary-link path="/search-photos" text="Search photos" />} @else {
+    <ui-primary-link path="/search" text="Search photos" />} @else {
     <app-error-template errorType="photos"></app-error-template>
     }
   </div>
   <div class="list-section">
     @if (!isVideosError) {
     <app-videos-list [videos]="videosSig()"></app-videos-list>
-    <ui-primary-link path="/search-videos" text="Search videos" />} @else {
+    <ui-primary-link path="/search" text="Search videos" />} @else {
     <app-error-template errorType="videos"></app-error-template>
     }
   </div>

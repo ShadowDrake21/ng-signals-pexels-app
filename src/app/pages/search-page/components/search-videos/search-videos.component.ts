@@ -18,6 +18,7 @@ import {
   updatePageSettings,
 } from '../../../../shared/utils/pagination.utils';
 import { AuthenticationService } from '../../../../core/authentication/authentication.service';
+import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
 
 @Component({
   selector: 'app-search-videos',
@@ -27,6 +28,7 @@ import { AuthenticationService } from '../../../../core/authentication/authentic
     VideoMiniatureComponent,
     LoadingTemplateComponent,
     ErrorTemplateComponent,
+    NoResultsComponent,
   ],
   templateUrl: './search-videos.component.html',
   styleUrl: './search-videos.component.scss',

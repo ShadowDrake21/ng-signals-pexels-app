@@ -129,3 +129,14 @@ body {
   min-height: 600px;
   padding: 20px 0;
 }
+
+.dark .collection-card {
+  &:hover {
+    background-color: #fff;
+    color: #000 !important;
+  }
+}
+
+.dark .no-results {
+  color: #000;
+}
