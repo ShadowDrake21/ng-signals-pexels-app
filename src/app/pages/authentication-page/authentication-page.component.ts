@@ -214,7 +214,7 @@ export class AuthenticationPageComponent implements OnDestroy {
 
   private openSnackBar(message: string) {
     this.snackBar.openFromComponent(SnackbarTemplateComponent, {
-      data: { error: message },
+      data: { message },
       duration: 5000,
       horizontalPosition: 'start',
     });
