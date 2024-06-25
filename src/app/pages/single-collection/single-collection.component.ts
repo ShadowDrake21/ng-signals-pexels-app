@@ -11,7 +11,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { CollectionMediaWidthTotalResults } from '../../shared/models/pexelEntities.models';
+import { CollectionMediaWidthTotalResults } from '../../shared/models/pexelEntities.model';
 import { MatTabsModule } from '@angular/material/tabs';
 import { PageEvent } from '@angular/material/paginator';
 import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
@@ -79,7 +79,6 @@ export class SingleCollectionComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((response) => {
-        console.log('response', response);
         this.collectionPhotosSig.set(response.photos);
         this.collectionVideosSig.set(response.videos);
       });

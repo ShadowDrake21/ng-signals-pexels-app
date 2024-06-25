@@ -11,6 +11,7 @@ import {
   resetPageSettings,
   updatePageSettings,
 } from '../../shared/utils/pagination.utils';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-popular-videos-page',
@@ -25,6 +26,7 @@ import {
   styleUrl: './popular-videos-page.component.scss',
 })
 export class PopularVideosPageComponent implements OnInit, OnDestroy {
+  private authenticationService = inject(AuthenticationService);
   private videosService = inject(VideosService);
 
   loading: boolean = true;

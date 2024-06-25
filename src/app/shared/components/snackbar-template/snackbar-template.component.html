@@ -1,0 +1,12 @@
+<div class="flex gap-4">
+  <span matSnackBarLabel>{{ data.error }}</span>
+  <span matSnackBarActions>
+    <button
+      mat-button
+      matSnackBarAction
+      (click)="snackBarRef.dismissWithAction()"
+    >
+      Close
+    </button>
+  </span>
+</div>

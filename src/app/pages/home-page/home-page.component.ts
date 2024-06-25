@@ -20,6 +20,7 @@ import { VideosListComponent } from './components/videos-list/videos-list.compon
 import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
 import { ErrorTemplateComponent } from '../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-home-page',
@@ -41,6 +42,7 @@ import { LoadingTemplateComponent } from '../../shared/components/loading-templa
 export class HomePageComponent implements OnInit, OnDestroy {
   private photosService = inject(PhotosService);
   private videosService = inject(VideosService);
+  private authenticationService = inject(AuthenticationService);
 
   photosLoading: boolean = true;
   videosLoading: boolean = true;
