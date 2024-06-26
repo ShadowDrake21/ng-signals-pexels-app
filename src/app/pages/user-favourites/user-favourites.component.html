@@ -42,7 +42,7 @@
           </p>
         </div>
         @if (videosSig().length) {
-        <div class="grid grid-cols-2 gap-4 my-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4 my-4">
           @for (video of videosSig(); track video.id) {
           <app-video-miniature
             [video]="video"

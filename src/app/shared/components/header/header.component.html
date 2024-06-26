@@ -6,7 +6,7 @@
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>menu</mat-icon></button
         >}
-        <mat-menu #menu="matMenu">
+        <mat-menu #menu="matMenu" class="sm:top-3">
           <a
             class="menu-link"
             mat-menu-item
@@ -44,16 +44,28 @@
             <span>Collections</span>
           </a>
         </mat-menu>
-        <a routerLink="/home">Signals Pexels App by Drake21</a>
-        <img class="w-10" src="/assets/header-logo.png" alt="logo" />
+        <a class="header-title hidden sm:block" routerLink="/home"
+          >Signals Pexels App by Drake21</a
+        >
+        <img
+          class="w-10 hidden sm:block"
+          src="/assets/header-logo.png"
+          alt="logo"
+        />
+        <a routerLink="/home" class="block sm:hidden">
+          <img class="w-10" src="/assets/header-logo.png" alt="logo"
+        /></a>
       </div>
-      <div class="flex gap-4 items-center">
+      <div class="gap-2 sm:gap-4 items-center flex">
         @if (isSignOutSig()){
+        <span class="font-bold hidden lg:block"
+          >Welcome, {{ userName | truncateText : 20 }}</span
+        >
         <a routerLink="/user-favourites" mat-icon-button>
           <mat-icon>favorite</mat-icon>
         </a>
         }
-        <div class="flex items-center">
+        <div class="items-center hidden md:flex">
           <mat-slide-toggle
             (toggleChange)="handleToggleTheme()"
             [checked]="themeSig() === 'light'"
@@ -65,6 +77,16 @@
             }
           </button>
         </div>
+        <button
+          mat-icon-button
+          class="responsive-theme__btn"
+          (click)="handleToggleTheme()"
+        >
+          @if (themeSig() === 'dark') {
+          <mat-icon>dark_mode</mat-icon>} @else {
+          <mat-icon>light_mode</mat-icon>
+          }
+        </button>
         @if (isSignOutSig()) {
         <button mat-icon-button (click)="onSignOut()">
           <mat-icon>logout</mat-icon></button

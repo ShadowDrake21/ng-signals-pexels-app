@@ -7,3 +7,13 @@
 .menu-link.active {
   background-color: #dfdfdf;
 }
+
+.responsive-theme__btn {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .responsive-theme__btn {
+    display: block !important;
+  }
+}

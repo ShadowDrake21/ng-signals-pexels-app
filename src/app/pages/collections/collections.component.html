@@ -1,5 +1,7 @@
 <div class="custom-container">
-  <h2 class="text-center text-2xl font-bold pb-3">Featured collections</h2>
+  <h2 class="text-center text-lg md:text-xl lg:text-2xl font-bold pb-3">
+    Featured collections
+  </h2>
   @if (!loading) { @if (!errorSig() &&
   collectionsWithTotalResultsSig()?.collections?.length) {
   <div>
@@ -8,7 +10,7 @@
       >{{ collectionsWithTotalResultsSig()?.total_results }}
     </p>
   </div>
-  <div class="grid grid-cols-3 gap-5 py-5">
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 py-5">
     @for (collection of collectionsWithTotalResultsSig()?.collections; track
     collection.id) {
     <a
@@ -17,7 +19,9 @@
     >
       <mat-card class="collection-card px-3 pt-1 pb-3" appearance="outlined">
         <mat-card-header class="w-full flex justify-center">
-          <mat-card-title class="pb-2">{{ collection.title }}</mat-card-title>
+          <mat-card-title class="pb-2 text-center">{{
+            collection.title
+          }}</mat-card-title>
         </mat-card-header>
         <mat-card-content class="text-center">
           <p *ngIf="collection.description">
@@ -58,7 +62,7 @@
     <app-error-template errorType="videos"></app-error-template>
   </div>
   }} @else {
-  <div class="flex justify-center py-10">
+  <div class="flex justify-center py-10 loading-position">
     <app-loading-template type="collections"></app-loading-template>
   </div>
   }

@@ -1,7 +1,7 @@
-<div class="photo-modal w-full h-auto">
+<div class="photo-modal w-full h-auto text-center sm:text-start">
   <h2 mat-dialog-title>Photo №{{ data.item.id }}</h2>
   <mat-dialog-content class="mat-typography">
-    <div class="flex gap-5">
+    <div class="flex gap-5 flex-col lg:flex-row">
       <div class="photo-modal__image-wrapper h-full">
         <img [src]="data.item.src.original" alt="" />
       </div>

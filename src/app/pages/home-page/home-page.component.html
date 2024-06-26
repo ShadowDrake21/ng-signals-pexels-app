@@ -1,32 +1,38 @@
 <section>
   @if (!photosLoading && !videosLoading) {
   <div class="list-section">
-    @if (!isPhotosError) {
+    @if (!isPhotosError && photosSig().length) {
     <app-photos-list [photos]="photosSig()"></app-photos-list>
     <ui-primary-link path="/search" text="Search photos" />} @else {
     <app-error-template errorType="photos"></app-error-template>
     }
   </div>
   <div class="list-section">
-    @if (!isVideosError) {
+    @if (!isVideosError && videosSig().length) {
     <app-videos-list [videos]="videosSig()"></app-videos-list>
     <ui-primary-link path="/search" text="Search videos" />} @else {
     <app-error-template errorType="videos"></app-error-template>
     }
   </div>
   <div>
-    <h2 class="text-center text-2xl font-bold pb-3">
+    <h2 class="text-center text-lg md:text-xl lg:text-2xl font-bold pb-3">
       Random photo and popular video
     </h2>
-    <div class="flex gap-4 justify-center items-center max-h-full">
-      @if (!isOtherError) {
-      <app-photo-miniature [photo]="randomPhotoSig()!"></app-photo-miniature>
-      <app-video-miniature [video]="popularVideoSig()!"></app-video-miniature>}
+    <div
+      class="flex flex-wrap-reverse gap-4 justify-center items-center max-h-full flex-col-reverse lg:flex-row"
+    >
+      @if (!isOtherError) { @if (randomPhotoSig() && popularVideoSig()) {
+      <app-photo-miniature [photo]="randomPhotoSig()!"></app-photo-miniature
+      ><app-video-miniature [video]="popularVideoSig()!"></app-video-miniature>
+      }@else { <app-error-template errorType="default"></app-error-template>} }
       @else { <app-error-template errorType="default"></app-error-template>}
     </div>
   </div>
   } @else {
-  <div class="loading-wrapper" [ngClass]="{ hidden: !photosLoading }">
+  <div
+    class="loading-wrapper loading-position"
+    [ngClass]="{ hidden: !photosLoading }"
+  >
     <app-loading-template type="page"></app-loading-template>
   </div>
   }
