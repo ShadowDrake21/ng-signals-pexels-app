@@ -108,18 +108,23 @@ export class SingleCollectionComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((result) => {
-        console.log('result', result);
+        console.log('type', type, 'result', result);
         if (result) {
-          if (type === 'photos' && 'media' in result) {
-            this.collectionPhotosSig.update((prev) => result);
-          } else {
-            this.collectionPhotosErrorSig.set(errorMessage);
+          if (type === 'photos') {
+            if ('media' in result) {
+              this.collectionPhotosSig.update((prev) => result);
+            } else {
+              this.collectionPhotosErrorSig.set(errorMessage);
+            }
           }
 
-          if (type === 'videos' && 'media' in result) {
-            this.collectionVideosSig.update((prev) => result);
-          } else {
-            this.collectionVideosErrorSig.set(errorMessage);
+          if (type === 'videos') {
+            if ('media' in result) {
+              this.collectionVideosSig.update((prev) => result);
+            } else {
+              this.collectionVideosErrorSig.set(errorMessage);
+              console.log('videos error', this.collectionVideosErrorSig());
+            }
           }
         }
       });

@@ -50,7 +50,7 @@ export class UserFavouritesComponent implements OnInit, OnDestroy {
   photosSig = signal<Photo[]>([]);
   photosIdsSig = signal<number[]>([]);
   photosErrorSig = signal<string>('');
-  photosPerPage: number = 6;
+  photosPerPage: number = 10;
 
   photosPageSig = signal<number>(0);
 

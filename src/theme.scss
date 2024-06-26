@@ -91,6 +91,24 @@ $dark-text-color: #333;
   border-color: $light-bg-color;
 }
 
+.dark .mat-mdc-outlined-button.mat-primary {
+  --mdc-outlined-button-label-text-color: #fff;
+  --mdc-outlined-button-outline-color: rgba(255, 255, 255, 0.22);
+  --mat-outlined-button-state-layer-color: #3f51b5;
+  --mat-outlined-button-ripple-color: rgba(92, 103, 168, 0.1);
+}
+
+.dark .collection-card {
+  &:hover {
+    background-color: #fff;
+    color: #000 !important;
+  }
+}
+
+.dark .special-text {
+  color: #000;
+}
+
 // Light mode
 .light {
   @include mat.all-component-themes($light-theme);

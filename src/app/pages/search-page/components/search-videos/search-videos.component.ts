@@ -19,6 +19,7 @@ import {
 } from '../../../../shared/utils/pagination.utils';
 import { AuthenticationService } from '../../../../core/authentication/authentication.service';
 import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
+import { StartSearchingComponent } from '../start-searching/start-searching.component';
 
 @Component({
   selector: 'app-search-videos',
@@ -29,13 +30,12 @@ import { NoResultsComponent } from '../../../../shared/components/no-results/no-
     LoadingTemplateComponent,
     ErrorTemplateComponent,
     NoResultsComponent,
+    StartSearchingComponent,
   ],
   templateUrl: './search-videos.component.html',
   styleUrl: './search-videos.component.scss',
 })
 export class SearchVideosComponent {
-  private authenticationService = inject(AuthenticationService);
-
   errorSig = input.required<string>({ alias: 'error' });
   videosWithTotalResultsSig = input.required<Videos | null>({
     alias: 'videos',
