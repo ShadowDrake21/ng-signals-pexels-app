@@ -33,8 +33,6 @@ import { NoResultsComponent } from '../../../../shared/components/no-results/no-
   styleUrl: './single-collection-videos.component.scss',
 })
 export class SingleCollectionVideosComponent {
-  private authenticationService = inject(AuthenticationService);
-
   inputSig = input.required<CollectionMediaWidthTotalResults | null>({
     alias: 'videos',
   });

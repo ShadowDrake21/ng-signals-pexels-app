@@ -1,7 +1,7 @@
 <section class="search-part">
   <div class="custom-container">
     <div class="pb-3">
-      <a mat-button routerLink="/collections"
+      <a mat-button routerLink="/home"
         ><mat-icon fontIcon="arrow_back"></mat-icon> Back to home</a
       >
     </div>
@@ -60,7 +60,7 @@
       </mat-tab>
     </mat-tab-group>
     } @else {
-    <div class="single-collection__wrapper flex justify-center items-center">
+    <div class="user-favourites__wrapper flex justify-center items-center">
       <app-loading-template type="single-collection"></app-loading-template>
     </div>
     }
