@@ -1,5 +1,11 @@
 <section class="search-part">
   <div class="custom-container">
+    <div class="pb-3">
+      <a mat-button routerLink="/collections"
+        ><mat-icon fontIcon="arrow_back"></mat-icon> Back to featured
+        collections page</a
+      >
+    </div>
     @if(!loading) {
     <mat-tab-group>
       <mat-tab label="Photos"

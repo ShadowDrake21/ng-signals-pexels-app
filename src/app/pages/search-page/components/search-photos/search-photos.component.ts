@@ -13,6 +13,7 @@ import {
   resetPageSettings,
   updatePageSettings,
 } from '../../../../shared/utils/pagination.utils';
+import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
 
 @Component({
   selector: 'app-search-photos',
@@ -27,6 +28,7 @@ import {
     PhotoMiniatureComponent,
     LoadingTemplateComponent,
     ErrorTemplateComponent,
+    NoResultsComponent,
   ],
   templateUrl: './search-photos.component.html',
   styleUrl: './search-photos.component.scss',

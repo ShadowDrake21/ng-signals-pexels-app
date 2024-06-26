@@ -6,6 +6,7 @@ import { LoadingTemplateComponent } from '../../../../shared/components/loading-
 import { PhotoMiniatureComponent } from '../../../../shared/components/photo-miniature/photo-miniature.component';
 import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexelEntities.model';
 import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
+import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
 
 @Component({
   selector: 'app-single-collection-photos',
@@ -15,6 +16,7 @@ import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
     ErrorTemplateComponent,
     LoadingTemplateComponent,
     MatPaginatorModule,
+    NoResultsComponent,
   ],
   templateUrl: './single-collection-photos.component.html',
   styleUrl: './single-collection-photos.component.scss',

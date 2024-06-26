@@ -1,1 +1,68 @@
-<p>user-favourites works!</p>
+<section class="search-part">
+  <div class="custom-container">
+    <div class="pb-3">
+      <a mat-button routerLink="/collections"
+        ><mat-icon fontIcon="arrow_back"></mat-icon> Back to home</a
+      >
+    </div>
+    @if(!loading) {
+    <mat-tab-group>
+      <mat-tab label="Photos">
+        <div class="pt-5">
+          <p>
+            <span class="font-bold">Total favourite photos: </span
+            >{{ photosIdsSig().length }}
+          </p>
+        </div>
+        @if (photosSig().length) {
+        <div class="photos-list w-fit">
+          @for (photo of photosSig(); track photo.id) {
+          <div class="photo-list__item">
+            <app-photo-miniature
+              [photo]="photo"
+              (removingFromFavs)="handleFavouriteRemoval($event, 'photos')"
+            ></app-photo-miniature>
+          </div>
+          }
+        </div>
+        <mat-paginator
+          [length]="photosIdsSig().length"
+          [pageSize]="photosPerPage"
+          [pageIndex]="photosPageSig()"
+          (page)="onPaginatorChange($event, 'photos')"
+        ></mat-paginator
+        >} @else { <app-no-results text="Nothing is here!" /> }
+      </mat-tab>
+
+      <mat-tab label="Videos"
+        ><div class="pt-5">
+          <p>
+            <span class="font-bold">Total favourite videos: </span
+            >{{ videosIdsSig().length }}
+          </p>
+        </div>
+        @if (videosSig().length) {
+        <div class="grid grid-cols-2 gap-4 my-4">
+          @for (video of videosSig(); track video.id) {
+          <app-video-miniature
+            [video]="video"
+            (removingFromFavs)="handleFavouriteRemoval($event, 'videos')"
+          ></app-video-miniature>
+          }
+        </div>
+        <mat-paginator
+          [length]="videosIdsSig().length"
+          [pageSize]="videosPerPage"
+          [pageIndex]="videosPageSig()"
+          (page)="onPaginatorChange($event, 'videos')"
+        ></mat-paginator
+        >} @else { <app-no-results text="Nothing is here!" /> }
+      </mat-tab>
+    </mat-tab-group>
+    } @else {
+    <div class="single-collection__wrapper flex justify-center items-center">
+      <app-loading-template type="single-collection"></app-loading-template>
+    </div>
+    }
+  </div>
+</section>
