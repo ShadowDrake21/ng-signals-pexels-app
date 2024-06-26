@@ -7,7 +7,7 @@
       >{{ videosWithTotalResultsSig()?.total_results }}
     </p>
   </div>
-  <div class="grid grid-cols-2 gap-4 my-4">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 my-4">
     @for (video of videosWithTotalResultsSig()?.videos; track video.id) {
     <app-video-miniature [video]="video"></app-video-miniature>
     }
