@@ -25,6 +25,8 @@ import { VideosListComponent } from './components/videos-list/videos-list.compon
 import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
 import { ErrorTemplateComponent } from '../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
+import { SnackbarTemplateComponent } from '../../shared/components/snackbar-template/snackbar-template.component';
+import { SnackbarService } from '../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-home-page',
@@ -46,6 +48,7 @@ import { LoadingTemplateComponent } from '../../shared/components/loading-templa
 export class HomePageComponent implements OnInit, OnDestroy {
   private photosService = inject(PhotosService);
   private videosService = inject(VideosService);
+  private snackbarService = inject(SnackbarService);
 
   photosLoading: boolean = true;
   videosLoading: boolean = true;
@@ -67,19 +70,30 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   loadAllData() {
     const forkJoinSubscription = forkJoin([
-      this.fetchPhotos(),
-      this.fetchVideos(),
-      this.fetchRandomPhoto(),
-      this.fetchPopularVideo(),
+      this.fetchPhotos().pipe(catchError(() => of(null))),
+      this.fetchVideos().pipe(catchError(() => of(null))),
+      this.fetchRandomPhoto().pipe(catchError(() => of(null))),
+      this.fetchPopularVideo().pipe(catchError(() => of(null))),
     ])
       .pipe(delay(2000))
-      .subscribe(() => {
-        const timerSubscription = timer(300).subscribe(() => {
+      .subscribe({
+        next: () => {
+          const timerSubscription = timer(300).subscribe(() => {
+            this.photosLoading = false;
+            this.videosLoading = false;
+          });
+
+          this.subscriptions.push(timerSubscription);
+        },
+        error: () => {
           this.photosLoading = false;
           this.videosLoading = false;
-        });
-
-        this.subscriptions.push(timerSubscription);
+          this.snackbarService.openSnackbar('Error fetching data');
+        },
+        complete: () => {
+          this.photosLoading = false;
+          this.videosLoading = false;
+        },
       });
 
     this.subscriptions.push(forkJoinSubscription);
@@ -100,7 +114,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
         }
       }),
       catchError((error: ErrorResponse) => {
+        this.snackbarService.openSnackbar('Error fetching data');
         this.isPhotosError = true;
+
+        // this.videosLoading = false;
         return of();
       })
     );
