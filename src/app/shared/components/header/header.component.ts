@@ -1,3 +1,4 @@
+// angular stuff
 import {
   Component,
   inject,
@@ -10,11 +11,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ThemeService } from '../../../core/services/theme.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterModule } from '@angular/router';
-import { AuthenticationService } from '../../../core/authentication/authentication.service';
 import { Subscription } from 'rxjs';
+
+// services
+import { AuthenticationService } from '../../../core/authentication/authentication.service';
+
+// services
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-header',

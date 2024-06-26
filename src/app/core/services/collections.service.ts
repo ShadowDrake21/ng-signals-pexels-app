@@ -1,11 +1,15 @@
-import { Injectable, inject, Signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { PaginationParams, ErrorResponse } from 'pexels';
+// angular stuff
+import { Injectable, inject } from '@angular/core';
+import { PaginationParams } from 'pexels';
 import { from, map, catchError, of, Observable } from 'rxjs';
+
+// models
 import {
   CollectionsWithTotalResults,
   CollectionMediaWidthTotalResults,
 } from '../../shared/models/pexelEntities.model';
+
+// services
 import { PexelsService } from './pexels.service';
 
 @Injectable({ providedIn: 'root' })

@@ -1,4 +1,7 @@
-import { User, UserCredential } from '@angular/fire/auth';
+// angular stuff
+import { User } from '@angular/fire/auth';
+
+// models
 import { IUserDataToLC } from '../../shared/models/auth.model';
 
 export const formAuthLocalStorageObj = (user: User): IUserDataToLC => {

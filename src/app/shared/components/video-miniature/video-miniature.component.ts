@@ -1,6 +1,6 @@
+// angular stuff
 import {
   Component,
-  effect,
   inject,
   input,
   OnInit,
@@ -12,14 +12,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { VideoModalComponent } from './components/video-modal/video-modal.component';
-import { getAppropriateVideo } from '../../utils/video.utils';
-import { AuthenticationService } from '../../../core/authentication/authentication.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { DatabaseService } from '../../../core/services/database.service';
-import { SnackbarTemplateComponent } from '../snackbar-template/snackbar-template.component';
 import { map, Observable, Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+
+// components
+import { VideoModalComponent } from './components/video-modal/video-modal.component';
+
+// services
+import { AuthenticationService } from '../../../core/authentication/authentication.service';
+import { DatabaseService } from '../../../core/services/database.service';
+import { SnackbarService } from '../../../core/services/snackbar.service';
+
+// utils
+import { getAppropriateVideo } from '../../utils/video.utils';
 
 @Component({
   selector: 'app-video-miniature',
@@ -37,7 +42,7 @@ import { AsyncPipe } from '@angular/common';
 export class VideoMiniatureComponent implements OnInit {
   private authenticationService = inject(AuthenticationService);
   private databaseService = inject(DatabaseService);
-  private snackBar = inject(MatSnackBar);
+  private snackBarService = inject(SnackbarService);
 
   readonly modal = inject(MatDialog);
 
@@ -77,12 +82,14 @@ export class VideoMiniatureComponent implements OnInit {
       .pipe(
         map((response) => {
           if (response) {
-            this.openSnackBar(
+            this.snackBarService.openSnackbar(
               `Video added to favourites (document #${response})`
             );
             this.checkFavouriteMark();
           } else {
-            this.openSnackBar(`Error while adding to favourites`);
+            this.snackBarService.openSnackbar(
+              `Error while adding to favourites`
+            );
           }
         })
       )
@@ -96,13 +103,14 @@ export class VideoMiniatureComponent implements OnInit {
       .deleteFromFavourites('videos', this.video().id)
       .pipe(
         map((response) => {
-          console.log(response);
           if (response) {
-            this.openSnackBar(`Video removed from favourites`);
+            this.snackBarService.openSnackbar(`Video removed from favourites`);
             this.checkFavouriteMark();
             this.removingFromFavs.emit(this.video().id);
           } else {
-            this.openSnackBar(`Error while removing from favourites`);
+            this.snackBarService.openSnackbar(
+              `Error while removing from favourites`
+            );
           }
         })
       )
@@ -116,14 +124,6 @@ export class VideoMiniatureComponent implements OnInit {
       'videos',
       this.video().id
     );
-  }
-
-  private openSnackBar(message: string) {
-    this.snackBar.openFromComponent(SnackbarTemplateComponent, {
-      data: { message },
-      duration: 5000,
-      horizontalPosition: 'left',
-    });
   }
 
   ngOnDestroy(): void {

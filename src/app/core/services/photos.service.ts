@@ -1,5 +1,5 @@
-import { inject, Injectable, Signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+// angular stuff
+import { inject, Injectable } from '@angular/core';
 import {
   PaginationParams,
   ErrorResponse,
@@ -8,6 +8,8 @@ import {
   Photos,
 } from 'pexels';
 import { from, map, catchError, of, Observable, throwError } from 'rxjs';
+
+// services
 import { PexelsService } from './pexels.service';
 
 @Injectable({ providedIn: 'root' })

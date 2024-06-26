@@ -1,5 +1,8 @@
+// angular stuff
 import { Injectable } from '@angular/core';
 import { createClient } from 'pexels';
+
+// environment
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({

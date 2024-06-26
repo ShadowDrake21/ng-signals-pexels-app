@@ -1,17 +1,25 @@
+// angular stuff
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { VideosService } from '../../core/services/videos.service';
 import { catchError, delay, map, of, Subscription, tap } from 'rxjs';
 import { ErrorResponse, Videos } from 'pexels';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+
+// services
+import { VideosService } from '../../core/services/videos.service';
+
+// components
 import { ErrorTemplateComponent } from '../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
 import { VideoMiniatureComponent } from '../../shared/components/video-miniature/video-miniature.component';
+
+// contents
 import { errorMessage } from '../../shared/contents/errors.contents';
+
+// utils
 import {
   resetPageSettings,
   updatePageSettings,
 } from '../../shared/utils/pagination.utils';
-import { AuthenticationService } from '../../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-popular-videos-page',
@@ -26,7 +34,6 @@ import { AuthenticationService } from '../../core/authentication/authentication.
   styleUrl: './popular-videos-page.component.scss',
 })
 export class PopularVideosPageComponent implements OnInit, OnDestroy {
-  private authenticationService = inject(AuthenticationService);
   private videosService = inject(VideosService);
 
   loading: boolean = true;

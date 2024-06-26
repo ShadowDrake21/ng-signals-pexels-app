@@ -1,4 +1,7 @@
+// angular stuff
 import { Injectable, signal, WritableSignal } from '@angular/core';
+
+// utils
 import {
   retrieveItemFromLC,
   setItemInLC,

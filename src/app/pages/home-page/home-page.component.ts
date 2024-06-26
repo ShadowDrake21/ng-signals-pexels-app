@@ -1,5 +1,5 @@
+// angular stuff
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { PhotosService } from '../../core/services/photos.service';
 import {
   catchError,
   delay,
@@ -11,16 +11,20 @@ import {
   timer,
 } from 'rxjs';
 import { ErrorResponse, Photo, Video } from 'pexels';
+import { JsonPipe, NgClass } from '@angular/common';
+
+// services
+import { PhotosService } from '../../core/services/photos.service';
+import { VideosService } from '../../core/services/videos.service';
+
+// components
 import { PhotoMiniatureComponent } from '../../shared/components/photo-miniature/photo-miniature.component';
 import { PhotosListComponent } from './components/photos-list/photos-list.component';
-import { JsonPipe, NgClass } from '@angular/common';
-import { VideosService } from '../../core/services/videos.service';
 import { VideoMiniatureComponent } from '../../shared/components/video-miniature/video-miniature.component';
 import { VideosListComponent } from './components/videos-list/videos-list.component';
 import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
 import { ErrorTemplateComponent } from '../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
-import { AuthenticationService } from '../../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-home-page',
@@ -42,7 +46,6 @@ import { AuthenticationService } from '../../core/authentication/authentication.
 export class HomePageComponent implements OnInit, OnDestroy {
   private photosService = inject(PhotosService);
   private videosService = inject(VideosService);
-  private authenticationService = inject(AuthenticationService);
 
   photosLoading: boolean = true;
   videosLoading: boolean = true;
@@ -135,7 +138,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
       }),
       map((result) => {
         if (result.type === 'success') {
-          console.log('random', result.photo);
           this.randomPhotoSig.set(result.photo);
         }
       }),

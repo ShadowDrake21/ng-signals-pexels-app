@@ -1,22 +1,20 @@
-import {
-  Component,
-  effect,
-  inject,
-  input,
-  OnInit,
-  output,
-  signal,
-} from '@angular/core';
-import { VideoMiniatureComponent } from '../../../../shared/components/video-miniature/video-miniature.component';
+// angular stuff
+import { Component, effect, input, output, signal } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { Videos, Video } from 'pexels';
+import { MatGridListModule } from '@angular/material/grid-list';
+
+// components
+import { VideoMiniatureComponent } from '../../../../shared/components/video-miniature/video-miniature.component';
 import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../../../shared/components/loading-template/loading-template.component';
-import { Photo, Videos, Video } from 'pexels';
-import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexelEntities.model';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
-import { AuthenticationService } from '../../../../core/authentication/authentication.service';
 import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
+
+// models
+import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexelEntities.model';
+
+// utils
+import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
 
 @Component({
   selector: 'app-single-collection-videos',

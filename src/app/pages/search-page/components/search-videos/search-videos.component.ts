@@ -1,25 +1,20 @@
-import {
-  Component,
-  effect,
-  inject,
-  input,
-  OnInit,
-  output,
-  signal,
-} from '@angular/core';
-
+// angular stuff
+import { Component, effect, input, output, signal } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Videos } from 'pexels';
+
+// components
 import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../../../shared/components/loading-template/loading-template.component';
 import { VideoMiniatureComponent } from '../../../../shared/components/video-miniature/video-miniature.component';
+import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
+import { StartSearchingComponent } from '../start-searching/start-searching.component';
+
+// utils
 import {
   resetPageSettings,
   updatePageSettings,
 } from '../../../../shared/utils/pagination.utils';
-import { AuthenticationService } from '../../../../core/authentication/authentication.service';
-import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
-import { StartSearchingComponent } from '../start-searching/start-searching.component';
 
 @Component({
   selector: 'app-search-videos',

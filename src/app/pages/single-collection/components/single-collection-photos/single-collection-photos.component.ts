@@ -1,12 +1,19 @@
+// angular stuff
 import { Component, effect, input, output, signal } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Photo, PhotosWithTotalResults } from 'pexels';
+
+// components
 import { ErrorTemplateComponent } from '../../../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../../../shared/components/loading-template/loading-template.component';
 import { PhotoMiniatureComponent } from '../../../../shared/components/photo-miniature/photo-miniature.component';
-import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexelEntities.model';
-import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
 import { NoResultsComponent } from '../../../../shared/components/no-results/no-results.component';
+
+// models
+import { CollectionMediaWidthTotalResults } from '../../../../shared/models/pexelEntities.model';
+
+// utils
+import { updatePageSettings } from '../../../../shared/utils/pagination.utils';
 
 @Component({
   selector: 'app-single-collection-photos',
