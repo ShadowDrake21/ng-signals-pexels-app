@@ -13,9 +13,19 @@
       <a [href]="video().url" target="_blank" mat-button>See on Pexels</a>
       <button mat-button (click)="openModal()">See more</button>
     </div>
-    <button mat-button [disabled]="!isLikeableSig()">
+    @if (!(markedAsFavourite$ | async)) {
+    <button mat-button (click)="onAddToFavs()" [disabled]="!isLikeableSig()">
       <mat-icon fontIcon="thumb_up"></mat-icon>
     </button>
+    } @else {
+    <button
+      mat-button
+      (click)="onDeleteFromFavs()"
+      [disabled]="!isLikeableSig()"
+    >
+      <mat-icon fontIcon="thumb_down" color="warn"></mat-icon>
+    </button>
+    }
   </mat-card-actions>
 </mat-card>
 }
