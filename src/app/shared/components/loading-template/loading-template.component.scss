@@ -12,5 +12,11 @@
 }
 
 .loader-custom-page {
-  scale: 2;
+  scale: 1.5;
+}
+
+@media (max-width: 800px) {
+  .loader-custom-page {
+    scale: 1;
+  }
 }

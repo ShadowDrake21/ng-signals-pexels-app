@@ -1,6 +1,8 @@
 <div class="custom-container">
-  <h2 class="text-center text-2xl font-bold pb-3">Many videos...</h2>
-  <div class="grid grid-cols-2 gap-4">
+  <h2 class="text-center text-lg md:text-xl lg:text-2xl font-bold pb-3">
+    Many videos...
+  </h2>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     @for (video of videos(); track video.id) {
     <app-video-miniature [video]="video"></app-video-miniature>
     }

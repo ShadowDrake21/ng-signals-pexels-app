@@ -20,6 +20,9 @@ import { AuthenticationService } from '../../../core/authentication/authenticati
 
 // services
 import { ThemeService } from '../../../core/services/theme.service';
+import { retrieveItemFromLC } from '../../utils/localStorage.utils';
+import { IUserDataToLC } from '../../models/auth.model';
+import { TruncateTextPipe } from '../../pipes/truncate-text.pipe';
 
 @Component({
   selector: 'app-header',
@@ -31,19 +34,22 @@ import { ThemeService } from '../../../core/services/theme.service';
     MatSlideToggleModule,
     MatMenuModule,
     RouterModule,
+    TruncateTextPipe,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private themeService = inject(ThemeService);
   private authenticationService = inject(AuthenticationService);
+  private themeService = inject(ThemeService);
   private router = inject(Router);
 
   isAuthHeader = input.required<boolean>();
 
   themeSig = signal<string>('');
   isSignOutSig = signal<boolean>(false);
+
+  userName: string = '';
 
   private subscriptions: Subscription[] = [];
 
@@ -53,6 +59,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const checkAuthSubscription =
       this.authenticationService.isUserAuth.subscribe((value) => {
         this.isSignOutSig.set(value);
+
+        if (value) {
+          this.userName = (retrieveItemFromLC('user') as IUserDataToLC).name;
+        } else {
+          this.userName = '';
+        }
       });
 
     this.subscriptions.push(checkAuthSubscription);
