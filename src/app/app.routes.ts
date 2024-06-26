@@ -1,5 +1,10 @@
+// angular stuff
 import { Routes } from '@angular/router';
+
+// components
 import { AuthenticationPageComponent } from './pages/authentication-page/authentication-page.component';
+
+// guards
 import { authGuard } from './core/guards/auth.guard';
 import { notAuthGuard } from './core/guards/not-auth.guard';
 

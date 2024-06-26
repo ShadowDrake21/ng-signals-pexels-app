@@ -1,10 +1,5 @@
-import {
-  Collection,
-  ErrorResponse,
-  Photo,
-  PhotosWithTotalResults,
-  Video,
-} from 'pexels';
+// angular stuff
+import { Collection, Photo, Video } from 'pexels';
 
 export type CollectionsWithTotalResults = {
   collections: Collection[];

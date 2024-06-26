@@ -1,15 +1,14 @@
+// angular stuff
 import {
   Component,
   inject,
   OnDestroy,
-  OnInit,
   signal,
   WritableSignal,
 } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
-  AbstractControlOptions,
   FormControl,
   FormGroup,
   FormsModule,
@@ -17,25 +16,21 @@ import {
   Validators,
 } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  catchError,
-  delay,
-  merge,
-  Observable,
-  of,
-  Subscription,
-  tap,
-} from 'rxjs';
-import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
+import { delay, merge, of, Subscription, tap } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FirebaseError } from '@angular/fire/app';
-import { SnackbarTemplateComponent } from '../../shared/components/snackbar-template/snackbar-template.component';
+
+// components
+import { PrimaryLinkComponent } from '../../shared/components/UI/primary-link/primary-link.component';
+
+// services
+import { AuthenticationService } from '../../core/authentication/authentication.service';
+import { SnackbarService } from '../../core/services/snackbar.service';
 
 type SignInControlNames = 'email' | 'password';
 type SignUpControlNames = 'name' | 'email' | 'password' | 'confirmPassword';
@@ -62,7 +57,7 @@ type SignUpControlNames = 'name' | 'email' | 'password' | 'confirmPassword';
 export class AuthenticationPageComponent implements OnDestroy {
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
+  private snackBarService = inject(SnackbarService);
 
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -175,7 +170,7 @@ export class AuthenticationPageComponent implements OnDestroy {
         .subscribe({
           next: () => this.router.navigate(['/home']),
           error: (error: FirebaseError) => {
-            this.openSnackBar(error.message);
+            this.snackBarService.openSnackbar(error.message);
             this.signInForm.reset();
             this.loading = false;
           },
@@ -201,7 +196,7 @@ export class AuthenticationPageComponent implements OnDestroy {
         .subscribe({
           next: () => this.router.navigate(['/home']),
           error: (error: FirebaseError) => {
-            this.openSnackBar(error.message);
+            this.snackBarService.openSnackbar(error.message);
             this.loading = false;
           },
         });
@@ -210,14 +205,6 @@ export class AuthenticationPageComponent implements OnDestroy {
     } else {
       return;
     }
-  }
-
-  private openSnackBar(message: string) {
-    this.snackBar.openFromComponent(SnackbarTemplateComponent, {
-      data: { message },
-      duration: 5000,
-      horizontalPosition: 'start',
-    });
   }
 
   ngOnDestroy(): void {

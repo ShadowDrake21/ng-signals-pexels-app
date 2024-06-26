@@ -1,4 +1,5 @@
-import { AsyncPipe, JsonPipe, NgOptimizedImage } from '@angular/common';
+// angular stuff
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   inject,
@@ -13,12 +14,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { map, Observable, Subscription } from 'rxjs';
+
+// components
 import { PhotoModalComponent } from './components/photo-modal/photo-modal.component';
+
+// services
 import { AuthenticationService } from '../../../core/authentication/authentication.service';
 import { DatabaseService } from '../../../core/services/database.service';
-import { SnackbarTemplateComponent } from '../snackbar-template/snackbar-template.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, Observable, Subscription } from 'rxjs';
+import { SnackbarService } from '../../../core/services/snackbar.service';
 
 @Component({
   selector: 'app-photo-miniature',
@@ -36,7 +40,7 @@ import { map, Observable, Subscription } from 'rxjs';
 export class PhotoMiniatureComponent implements OnInit, OnDestroy {
   private authenticationService = inject(AuthenticationService);
   private databaseService = inject(DatabaseService);
-  private snackBar = inject(MatSnackBar);
+  private snackBarService = inject(SnackbarService);
 
   readonly modal = inject(MatDialog);
 
@@ -74,12 +78,14 @@ export class PhotoMiniatureComponent implements OnInit, OnDestroy {
       .pipe(
         map((response) => {
           if (response) {
-            this.openSnackBar(
+            this.snackBarService.openSnackbar(
               `Photo added to favourites (document #${response})`
             );
             this.checkFavouriteMark();
           } else {
-            this.openSnackBar(`Error while adding to favourites`);
+            this.snackBarService.openSnackbar(
+              `Error while adding to favourites`
+            );
           }
         })
       )
@@ -93,27 +99,20 @@ export class PhotoMiniatureComponent implements OnInit, OnDestroy {
       .deleteFromFavourites('photos', this.photo().id)
       .pipe(
         map((response) => {
-          console.log(response);
           if (response) {
-            this.openSnackBar(`Photo removed from favourites `);
+            this.snackBarService.openSnackbar(`Photo removed from favourites `);
             this.checkFavouriteMark();
             this.removingFromFavs.emit(this.photo().id);
           } else {
-            this.openSnackBar(`Error while removing from favourites`);
+            this.snackBarService.openSnackbar(
+              `Error while removing from favourites`
+            );
           }
         })
       )
       .subscribe();
 
     this.subscriptions.push(deleteSubscription);
-  }
-
-  private openSnackBar(message: string) {
-    this.snackBar.openFromComponent(SnackbarTemplateComponent, {
-      data: { message },
-      duration: 5000,
-      horizontalPosition: 'left',
-    });
   }
 
   private checkFavouriteMark() {

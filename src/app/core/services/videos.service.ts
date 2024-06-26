@@ -1,8 +1,10 @@
-import { Injectable, Signal, inject } from '@angular/core';
-import { PexelsService } from './pexels.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { PaginationParams, Videos, ErrorResponse, Video } from 'pexels';
+// angular stuff
+import { Injectable, inject } from '@angular/core';
+import { PaginationParams, Videos, Video } from 'pexels';
 import { from, map, catchError, of, Observable, throwError } from 'rxjs';
+
+// services
+import { PexelsService } from './pexels.service';
 
 @Injectable({ providedIn: 'root' })
 export class VideosService {

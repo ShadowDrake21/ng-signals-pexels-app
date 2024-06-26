@@ -1,6 +1,5 @@
-import { JsonPipe } from '@angular/common';
-import { Component, effect, Input, input } from '@angular/core';
-import { ErrorResponse } from 'pexels';
+// angular stuff
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-error-template',

@@ -1,16 +1,14 @@
+// angular stuff
 import {
   Component,
   effect,
   inject,
   OnDestroy,
   OnInit,
-  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { SearchPhotosComponent } from './components/search-photos/search-photos.component';
-import { SearchVideosComponent } from './components/search-videos/search-videos.component';
 import { PageEvent } from '@angular/material/paginator';
 import { PhotosWithTotalResults, Videos } from 'pexels';
 import {
@@ -26,12 +24,20 @@ import {
   takeUntil,
   Observable,
 } from 'rxjs';
-import { VideosService } from '../../core/services/videos.service';
-import { PhotosService } from '../../core/services/photos.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+
+// components
+import { SearchPhotosComponent } from './components/search-photos/search-photos.component';
+import { SearchVideosComponent } from './components/search-videos/search-videos.component';
+
+// services
+import { VideosService } from '../../core/services/videos.service';
+import { PhotosService } from '../../core/services/photos.service';
+
+// contents
 import { errorMessage } from '../../shared/contents/errors.contents';
 
 @Component({
@@ -88,8 +94,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     this.typeNumberSig() === 0
       ? this.typeSig.set('photos')
       : this.typeSig.set('videos');
-
-    console.log('typesig', this.typeSig());
   }
 
   ngOnInit(): void {
@@ -120,7 +124,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
               .searchPhotos(term)
               .pipe(catchError(() => this.catchErrorInSearch()));
           } else {
-            console.log('search videos');
             return this.videosService
               .searchVideos(term, { per_page: 6 })
               .pipe(catchError(() => this.catchErrorInSearch()));

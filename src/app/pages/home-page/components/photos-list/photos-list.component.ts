@@ -1,13 +1,14 @@
-import { Component, Input, input } from '@angular/core';
-import { MatGridListModule } from '@angular/material/grid-list';
+// angular stuff
+import { Component, input } from '@angular/core';
 import { Photo } from 'pexels';
+
+// components
 import { PhotoMiniatureComponent } from '../../../../shared/components/photo-miniature/photo-miniature.component';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-photos-list',
   standalone: true,
-  imports: [MatGridListModule, PhotoMiniatureComponent],
+  imports: [PhotoMiniatureComponent],
   templateUrl: './photos-list.component.html',
   styleUrl: './photos-list.component.scss',
 })

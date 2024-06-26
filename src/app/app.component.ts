@@ -1,24 +1,27 @@
+// angular stuff
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  Router,
-  RouterOutlet,
-} from '@angular/router';
-import { PexelsService } from './core/services/pexels.service';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject, takeUntil } from 'rxjs';
+
+// components
 import { HeaderComponent } from './shared/components/header/header.component';
-import { ThemeService } from './core/services/theme.service';
 import { FooterComponent } from './shared/components/footer/footer.component';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { ExpireModalComponent } from './components/expire-modal/expire-modal.component';
+
+// services
+import { ThemeService } from './core/services/theme.service';
+import { AuthenticationService } from './core/authentication/authentication.service';
+
+// utils
 import {
   removeItemFromLC,
   retrieveItemFromLC,
 } from './shared/utils/localStorage.utils';
+
+// models
 import { IUserDataToLC } from './shared/models/auth.model';
-import { AuthenticationService } from './core/authentication/authentication.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ExpireModalComponent } from './components/expire-modal/expire-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -61,10 +64,7 @@ export class AppComponent implements OnInit {
     const user: IUserDataToLC = retrieveItemFromLC('user');
 
     if (user) {
-      console.log('user ');
-      console.log(new Date(user.expireTime), new Date());
       if (new Date(user.expireTime) < new Date()) {
-        console.log('user removal');
         removeItemFromLC('user');
         this.authenticationService.signOut();
 

@@ -1,3 +1,4 @@
+// angular stuff
 import { Video } from 'pexels';
 
 export const getAppropriateVideo = (video: Video) => {

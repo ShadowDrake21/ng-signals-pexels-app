@@ -1,13 +1,22 @@
+// angular stuff
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { CollectionsService } from '../../core/services/collections.service';
 import { MatCardModule } from '@angular/material/card';
 import { ErrorResponse } from 'pexels';
 import { map, delay, tap, catchError, of, Subscription } from 'rxjs';
-import { errorMessage } from '../../shared/contents/errors.contents';
-import { CollectionsWithTotalResults } from '../../shared/models/pexelEntities.model';
 import { NgIf } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+
+// services
+import { CollectionsService } from '../../core/services/collections.service';
+
+// contents
+import { errorMessage } from '../../shared/contents/errors.contents';
+
+// models
+import { CollectionsWithTotalResults } from '../../shared/models/pexelEntities.model';
+
+// components
 import { ErrorTemplateComponent } from '../../shared/components/error-template/error-template.component';
 import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
 

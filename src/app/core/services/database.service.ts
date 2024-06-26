@@ -1,3 +1,4 @@
+// angular stuff
 import { inject, Injectable } from '@angular/core';
 import {
   addDoc,
@@ -5,21 +6,16 @@ import {
   Firestore,
   where,
   query,
-  getDoc,
   getDocs,
   deleteDoc,
 } from '@angular/fire/firestore';
-import { doc, setDoc } from '@firebase/firestore';
-import {
-  catchError,
-  from,
-  map,
-  Observable,
-  of,
-  switchMap,
-  throwError,
-} from 'rxjs';
+import { doc } from '@firebase/firestore';
+import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
+
+// utils
 import { retrieveItemFromLC } from '../../shared/utils/localStorage.utils';
+
+// models
 import { IUserDataToLC } from '../../shared/models/auth.model';
 
 @Injectable({ providedIn: 'root' })
@@ -48,7 +44,6 @@ export class DatabaseService {
     id: number
   ): Observable<boolean> {
     const userInLC: IUserDataToLC | null = retrieveItemFromLC('user');
-    console.log('inside of deleteFromFavourites', userInLC);
 
     if (userInLC) {
       const q = query(

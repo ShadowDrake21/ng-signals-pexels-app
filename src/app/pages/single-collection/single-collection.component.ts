@@ -1,5 +1,5 @@
+// angular stuff
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { CollectionsService } from '../../core/services/collections.service';
 import { ActivatedRoute, ParamMap, RouterLink } from '@angular/router';
 import {
   delay,
@@ -11,15 +11,24 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { CollectionMediaWidthTotalResults } from '../../shared/models/pexelEntities.model';
-import { MatTabsModule } from '@angular/material/tabs';
 import { PageEvent } from '@angular/material/paginator';
-import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
-import { errorMessage } from '../../shared/contents/errors.contents';
-import { SingleCollectionPhotosComponent } from './components/single-collection-photos/single-collection-photos.component';
-import { SingleCollectionVideosComponent } from './components/single-collection-videos/single-collection-videos.component';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+
+// services
+import { CollectionsService } from '../../core/services/collections.service';
+
+// models
+import { CollectionMediaWidthTotalResults } from '../../shared/models/pexelEntities.model';
+
+// components
+import { LoadingTemplateComponent } from '../../shared/components/loading-template/loading-template.component';
+import { SingleCollectionPhotosComponent } from './components/single-collection-photos/single-collection-photos.component';
+import { SingleCollectionVideosComponent } from './components/single-collection-videos/single-collection-videos.component';
+
+// contents
+import { errorMessage } from '../../shared/contents/errors.contents';
 
 @Component({
   selector: 'app-single-collection',
@@ -108,7 +117,6 @@ export class SingleCollectionComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((result) => {
-        console.log('type', type, 'result', result);
         if (result) {
           if (type === 'photos') {
             if ('media' in result) {
@@ -123,7 +131,6 @@ export class SingleCollectionComponent implements OnInit, OnDestroy {
               this.collectionVideosSig.update((prev) => result);
             } else {
               this.collectionVideosErrorSig.set(errorMessage);
-              console.log('videos error', this.collectionVideosErrorSig());
             }
           }
         }
