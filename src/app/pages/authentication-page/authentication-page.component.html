@@ -40,14 +40,26 @@
             <mat-error>{{ signInErrorSignals.password() }}</mat-error>
             }
           </mat-form-field>
-          <button
-            mat-stroked-button
-            type="submit"
-            color="primary"
-            [disabled]="signInForm.invalid"
-          >
-            Sign-in
-          </button>
+          <div class="flex gap-2">
+            <button
+              mat-stroked-button
+              type="submit"
+              color="primary"
+              class="w-full"
+              [disabled]="signInForm.invalid"
+            >
+              Sign-in
+            </button>
+            <button
+              mat-stroked-button
+              type="button"
+              color="primary"
+              class="w-25"
+              (click)="onSetTestData()"
+            >
+              Test
+            </button>
+          </div>
         </form>
         <mat-divider [vertical]="true"></mat-divider>
         <form
