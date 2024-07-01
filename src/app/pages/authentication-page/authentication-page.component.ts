@@ -207,6 +207,10 @@ export class AuthenticationPageComponent implements OnDestroy {
     }
   }
 
+  onSetTestData() {
+    this.signInForm.setValue({ email: 'test@gmail.com', password: '111111' });
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
