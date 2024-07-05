@@ -57,10 +57,10 @@
         /></a>
       </div>
       <div class="gap-2 sm:gap-4 items-center flex">
-        @if (isSignOutSig()){
+        @if (isAuth()){ @if (userName) {
         <span class="font-bold hidden lg:block"
           >Welcome, {{ userName | truncateText : 20 }}</span
-        >
+        >}
         <a routerLink="/user-favourites" mat-icon-button>
           <mat-icon>favorite</mat-icon>
         </a>
@@ -87,7 +87,7 @@
           <mat-icon>light_mode</mat-icon>
           }
         </button>
-        @if (isSignOutSig()) {
+        @if (isAuth()) {
         <button mat-icon-button (click)="onSignOut()">
           <mat-icon>logout</mat-icon></button
         >} @else {

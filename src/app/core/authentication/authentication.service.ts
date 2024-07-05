@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -41,17 +42,19 @@ export class AuthenticationService {
   isUserAuth = new BehaviorSubject<boolean>(false);
 
   constructor() {
-    this.autoAuth();
+    this.setupAuthListener();
   }
 
-  checkUserAuth(): boolean {
-    return !!this.auth.currentUser;
-  }
-
-  autoAuth() {
-    if (retrieveItemFromLC('user')) {
-      this.isUserAuth.next(true);
-    }
+  private setupAuthListener() {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        this.isUserAuth.next(true);
+        setItemInLC('user', formAuthLocalStorageObj(user));
+      } else {
+        this.isUserAuth.next(false);
+        removeItemFromLC('user');
+      }
+    });
   }
 
   signUp(data: IAuthentication): Observable<UserCredential> {

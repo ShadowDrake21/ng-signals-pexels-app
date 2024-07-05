@@ -13,7 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterModule } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { delay, map, Observable, Subscription, tap } from 'rxjs';
 
 // services
 import { AuthenticationService } from '../../../core/authentication/authentication.service';
@@ -23,6 +23,7 @@ import { ThemeService } from '../../../core/services/theme.service';
 import { retrieveItemFromLC } from '../../utils/localStorage.utils';
 import { IUserDataToLC } from '../../models/auth.model';
 import { TruncateTextPipe } from '../../pipes/truncate-text.pipe';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -35,6 +36,7 @@ import { TruncateTextPipe } from '../../pipes/truncate-text.pipe';
     MatMenuModule,
     RouterModule,
     TruncateTextPipe,
+    AsyncPipe,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -47,34 +49,36 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuthHeader = input.required<boolean>();
 
   themeSig = signal<string>('');
-  isSignOutSig = signal<boolean>(false);
+  isAuth = signal<boolean>(false);
 
   userName: string = '';
+
+  auth$!: Observable<boolean>;
 
   private subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
     this.themeSig = this.themeService.getThemeSignal();
 
-    const checkAuthSubscription =
-      this.authenticationService.isUserAuth.subscribe((value) => {
-        this.isSignOutSig.set(value);
+    const authSubscription = this.authenticationService.isUserAuth
+      .pipe(
+        tap((authValue) => {
+          this.isAuth.set(authValue);
+          if (localStorage.getItem('user')) {
+            this.userName = (retrieveItemFromLC('user') as IUserDataToLC).name;
+          } else {
+            this.userName = '';
+          }
+        })
+      )
+      .subscribe();
 
-        if (value) {
-          this.userName = (retrieveItemFromLC('user') as IUserDataToLC).name;
-        } else {
-          this.userName = '';
-        }
-      });
-
-    this.subscriptions.push(checkAuthSubscription);
+    this.subscriptions.push(authSubscription);
   }
 
   handleToggleTheme() {
     this.themeService.toggleTheme();
   }
-
-  handleSetTheme() {}
 
   onSignOut() {
     const signOutSubscription = this.authenticationService
