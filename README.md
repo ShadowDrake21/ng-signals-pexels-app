@@ -2,6 +2,16 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.1.
 
+Project with Angular Signals and Pexels API to practice new technologies.
+
+## Quick tutorial
+
+![Quick tutorial](https://github.com/ShadowDrake21/ng-signals-pexels-app/raw/main/src/assets/readme-gif.gif)
+
+## How to work with the app?
+
+First of all, you can sign-in, sign-up or continue as a guest without saving functionality. The project allows users to watch photos and videos, to search them, to add/remove favourites and so on.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
