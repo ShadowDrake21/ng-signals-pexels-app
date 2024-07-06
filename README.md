@@ -12,6 +12,10 @@ Project with Angular Signals and Pexels API to practice new technologies.
 
 First of all, you can sign-in, sign-up or continue as a guest without saving functionality. The project allows users to watch photos and videos, to search them, to add/remove favourites and so on.
 
+## Warning!
+
+All secrets have been removed from the app, so in order to use the application you have to provide your own credentials/secrets to environment folder
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
