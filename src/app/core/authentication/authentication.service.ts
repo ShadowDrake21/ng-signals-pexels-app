@@ -45,6 +45,10 @@ export class AuthenticationService {
     this.setupAuthListener();
   }
 
+  get isAuthorized(): boolean {
+    return !!localStorage.getItem('user');
+  }
+
   private setupAuthListener() {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
