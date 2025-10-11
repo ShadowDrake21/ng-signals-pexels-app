@@ -1,41 +1,112 @@
-# NgSignalsPexelsApp
+# 📸 NgSignalsPexelsApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.1.
+**NgSignalsPexelsApp** is an Angular project (generated with **Angular CLI v17.0.1**) that integrates the **Pexels API** and leverages **Angular Signals** to practice and demonstrate modern reactive programming techniques in Angular.
 
-Project with Angular Signals and Pexels API to practice new technologies.
+---
 
 ## Quick tutorial
 
 ![Quick tutorial](https://github.com/ShadowDrake21/ng-signals-pexels-app/raw/main/src/assets/readme-gif.gif)
 
-## How to work with the app?
+## 🧠 Overview
 
-First of all, you can sign-in, sign-up or continue as a guest without saving functionality. The project allows users to watch photos and videos, to search them, to add/remove favourites and so on.
+This project serves as a sandbox to explore **Angular Signals**, **state management**, and **API integration** with real-world media content from **Pexels**.  
+Users can browse, search, and manage favorite photos and videos — all while experimenting with Angular’s new reactivity model.
 
-## Warning!
+---
 
-All secrets have been removed from the app, so in order to use the application you have to provide your own credentials/secrets to environment folder
+## 🚀 Features
 
-## Development server
+- 🔐 **Authentication options** — sign in, sign up, or explore as a guest  
+- 🖼️ **Photo & video browsing** via **Pexels API**  
+- 🔍 **Search functionality** for media content  
+- ❤️ **Add / remove favorites** (requires authenticated user)  
+- 🧭 **Reactive UI** powered by **Angular Signals**  
+- ⚙️ **Modular structure** for scalability and experimentation
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## ⚠️ Important Note
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+> All API secrets and credentials have been **removed** from the repository for security reasons.  
+> To run the app properly, you must provide your own **Pexels API credentials** inside the `/src/environments` folder.
 
-## Build
+Example environment file:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```ts
+export const environment = {
+  production: false,
+  pexelsApiKey: 'YOUR_PEXELS_API_KEY_HERE'
+};
+```
+🧭 How to Use the App
+Sign in, sign up, or continue as a guest.
 
-## Running unit tests
+Guest users can explore content but cannot save favorites.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Browse or search for photos and videos.
 
-## Running end-to-end tests
+Add or remove favorites using the UI controls.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Experiment with Angular Signals — watch how state changes propagate reactively through the app!
 
-## Further help
+🧰 Tech Stack
+Angular 17
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Angular Signals
+
+TypeScript
+
+Pexels API
+
+Firebase Authentication (optional)
+
+SCSS / TailwindCSS (optional)
+
+⚙️ Development
+Run the App Locally
+
+ng serve
+Then open: http://localhost:4200/
+The application will automatically reload when files change.
+
+Generate Components
+ng generate component component-name
+You can also generate directives, pipes, services, guards, and more:
+
+ng generate directive|pipe|service|class|guard|interface|enum|module
+Build for Production
+
+ng build
+Build artifacts are stored in the dist/ directory.
+
+🧪 Testing
+Unit Tests
+Run unit tests via Karma:
+
+bash
+Skopiuj kod
+ng test
+End-to-End Tests
+Run e2e tests:
+
+ng e2e
+You may need to install a compatible e2e testing package first.
+
+💡 Additional Resources
+For detailed help with Angular CLI commands, check out the official documentation:
+👉 Angular CLI Overview and Command Reference
+
+🌱 Future Improvements
+Add infinite scroll for media browsing
+
+Introduce user albums or collections
+
+Integrate pagination and lazy loading
+
+Support dark/light themes
+
+Add SSR (Angular Universal) for SEO
+
+👨‍💻 Author
+NgSignalsPexelsApp — a practical exploration of modern Angular reactivity and real API integration using Pexels.
